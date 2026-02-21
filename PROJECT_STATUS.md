@@ -8,7 +8,7 @@
 | Phase | Directory | Status | Progress |
 |-------|-----------|--------|----------|
 | Discovery | `discovery/` | ✅ Done | 100% |
-| PRD | `prd/` | 🟡 In Setup | 15% |
+| PRD | `prd/` | ✅ Done | 100% |
 | Architecture | `architecture/` | 🟡 In Setup | 10% |
 | Frontend | `frontend/` | ⬜ Blocked | 0% |
 | Backend | `backend/` | ⬜ Blocked | 0% |
@@ -64,12 +64,11 @@
 - [x] Problem statement, value proposition, success metrics
 - [x] Assumption list (A-01 ~ A-05) with validation plan
 
-### PRD `prd/STATUS.md`
-- [x] FR-01-1: Telegram integration
-- [x] FR-01-2: Teams integration (confirmed)
-- [ ] FR-01 through FR-06: functional requirements detail
-- [ ] Non-functional requirements
-- [ ] Acceptance criteria
+### PRD `prd/STATUS.md` ✅
+- [x] scope.md: MVP boundary (P0/P1/P2), 14 non-goals, Day 1-7 milestone plan
+- [x] functional-requirements.md: FR-01~FR-06 (23 requirements with user stories)
+- [x] non-functional-requirements.md: NFR-01~NFR-06 (performance/security/deployability)
+- [x] acceptance-criteria.md: 30 Given/When/Then criteria in English
 
 ### Architecture `architecture/STATUS.md`
 - [x] Tech stack fully confirmed
@@ -98,4 +97,4 @@
 
 ---
 
-*Last updated: 2026-02-21 — Discovery phase complete*
+*Last updated: 2026-02-21 — PRD phase complete*
