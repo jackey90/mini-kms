@@ -7,7 +7,7 @@
 
 | Phase | Directory | Status | Progress |
 |-------|-----------|--------|----------|
-| Discovery | `discovery/` | 🟡 In Setup | 20% |
+| Discovery | `discovery/` | ✅ Done | 100% |
 | PRD | `prd/` | 🟡 In Setup | 15% |
 | Architecture | `architecture/` | 🟡 In Setup | 10% |
 | Frontend | `frontend/` | ⬜ Blocked | 0% |
@@ -54,11 +54,15 @@
 
 ## Phase Details
 
-### Discovery `discovery/STATUS.md`
+### Discovery `discovery/STATUS.md` ✅
 - [x] Project background & constraints confirmed
-- [ ] Competitive analysis
-- [ ] User personas & journey map
-- [ ] Problem definition doc
+- [x] Competitive analysis (Notion AI / Guru / Confluence / Document360 / Tettra)
+- [x] Tech trends (RAG, multi-channel Bot, lightweight self-hosting)
+- [x] Differentiation positioning
+- [x] User personas: Admin + End User
+- [x] 4 core use cases + user journey maps
+- [x] Problem statement, value proposition, success metrics
+- [x] Assumption list (A-01 ~ A-05) with validation plan
 
 ### PRD `prd/STATUS.md`
 - [x] FR-01-1: Telegram integration
@@ -94,4 +98,4 @@
 
 ---
 
-*Last updated: 2026-02-21*
+*Last updated: 2026-02-21 — Discovery phase complete*

@@ -10,12 +10,12 @@
 1. `AGENTS.md` — 项目总规范（git 规范、memory 系统、STATUS 更新规则）
 2. `AD, Tech Lead, AKP.md` — 完整需求文档
 3. `software_rnd_full_process.md` — 开发流程参考（Phase 0 + Phase 1 部分）
-4. `01-discovery/STATUS.md` — 当前阶段进度
+4. `discovery/STATUS.md` — 当前阶段进度
 5. `memory/` 目录下最新的日期文件 — 已有决策和待确认问题
 
 ## 职责范围
 
-### 我负责产出的文件（存放在 `01-discovery/`）：
+### 我负责产出的文件（存放在 `discovery/`）：
 
 | 文件 | 内容 |
 |------|------|
