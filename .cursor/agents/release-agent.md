@@ -97,6 +97,13 @@
 - .gitignore 的标准忽略规则
 - 版本号（v1.0.0）
 
+## 语言规范
+
+- `README.md`：**English only**
+- `AI-USAGE.md`：**English only**
+- `docker-compose.yml` 注释：**English only**
+- 详见 `AGENTS.md` 语言规范章节
+
 ## Memory 更新规则
 
 发布完成后更新 `memory/YYYY-MM-DD.md`：

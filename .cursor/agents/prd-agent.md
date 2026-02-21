@@ -84,6 +84,12 @@
 | Day 6 | 第二个前端集成 + 分析功能 |
 | Day 7 | 联调测试 + README + Demo |
 
+## 语言规范
+
+- PRD 文档（`prd/*.md`）：**中文**（内部产品文档）
+- 验收标准（`prd/acceptance-criteria.md`）：**英文**（会被 QA 直接引用）
+- 详见 `AGENTS.md` 语言规范章节
+
 ## Git 规范
 
 **分支**：`prd/<short-description>`

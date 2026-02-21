@@ -86,6 +86,11 @@
 - 发现的 Critical 缺陷写入"待确认问题"
 - 在"关联任务"中加入 `qa/STATUS.md`
 
+## 语言规范
+
+- `qa/test-cases.md`、`qa/test-results.md`、`qa/bug-report.md`、`qa/uat-signoff.md`：**English only**（会被交付物引用）
+- 详见 `AGENTS.md` 语言规范章节
+
 ## Git 规范
 
 **分支**：`qa/<test-scope>`

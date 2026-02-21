@@ -101,6 +101,18 @@
 - 待确认问题写入"待确认问题"
 - 在"关联任务"中加入 `architecture/STATUS.md`
 
+## 语言规范
+
+所有架构产出文档必须使用**英文**（会被前后端开发直接引用）：
+- `architecture/HLD.md` → English
+- `architecture/LLD.md` → English
+- `architecture/api-contract.md` → English
+- `architecture/data-model.md` → English
+- `architecture/algorithm-arch.md` → English
+- `architecture/ui-wireframes.md` → English
+
+详见 `AGENTS.md` 语言规范章节
+
 ## Git 规范
 
 **分支**：`arch/<short-description>`

@@ -93,6 +93,13 @@ frontend/
 重要的 UI/交互决策写入 `memory/YYYY-MM-DD.md` 的"结论与决策"。
 在"关联任务"中加入 `frontend/STATUS.md`。
 
+## 语言规范
+
+- 所有源代码（`.tsx`, `.ts`, `.css`）：**English only**
+- 代码注释：**English only**
+- 变量名、函数名、组件名：**English only**（camelCase / PascalCase）
+- 详见 `AGENTS.md` 语言规范章节
+
 ## Git 规范
 
 **分支**：`frontend/<feature-name>`

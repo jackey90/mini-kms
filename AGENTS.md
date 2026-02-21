@@ -111,21 +111,23 @@
 
 ### Commit Message 格式
 
+**English only.** Format:
+
 ```
-[phase] 简短动作描述（动词开头）
+[phase] Short imperative description
 
 Memory: memory/YYYY-MM-DD.md
 ```
 
-示例：
+Examples:
 ```
-[prd] 完成 FR-01 到 FR-06 功能需求初稿
+[prd] Add functional requirements FR-01 to FR-06
 
 Memory: memory/2026-02-21.md
 ```
 
 ```
-[arch] 定义 REST API Contract 和数据模型
+[arch] Define REST API contract and data model
 
 Memory: memory/2026-02-22.md
 ```
@@ -141,7 +143,20 @@ Memory: memory/2026-02-22.md
 
 1. **读取上下文**：开始工作前先读取 `AD, Tech Lead, AKP.md`、当前阶段的 `STATUS.md`、以及最近的 `memory/` 文件
 2. **遇到歧义必须确认**：需求不清晰时，先在 memory 文件中记录问题，然后向用户提问，不要自行假设
-3. **更新进度**：完成每个子任务后立即更新 `STATUS.md`
+3. **更新进度**：完成每个子任务后立即更新 `STATUS.md` 和根目录 `PROJECT_STATUS.md`
 4. **记录决策**：每次与用户确认了什么，都写入当日 memory 文件
 5. **原子提交**：每个 commit 只包含一个逻辑变更单元
 6. **不跨阶段**：不要在当前阶段的 commit 中混入其他阶段的内容
+
+## 语言规范
+
+| 文件类型 | 语言 |
+|---------|------|
+| 源代码（所有语言）| **English only** |
+| 代码注释 | **English only** |
+| 技术设计文档（HLD/LLD/API Contract/Data Model/Algorithm Arch）| **English only** |
+| README.md / AI-USAGE.md | **English only** |
+| git commit message | **English only** |
+| STATUS.md（进度追踪）| 中文（内部使用） |
+| memory/（讨论记录）| 中文（内部使用） |
+| AGENTS.md / agent 指令文件 | 中文（内部使用） |
