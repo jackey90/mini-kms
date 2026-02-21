@@ -28,7 +28,7 @@
 
 | Agent 文件 | 负责阶段 | 对应目录 | 分支前缀 |
 |-----------|---------|---------|---------|
-| `01-discovery-agent.md` | 市场与用户研究 | `01-discovery/` | `discovery/` |
+| `01-discovery-agent.md` | 市场与用户研究 | `discovery/` | `discovery/` |
 | `02-prd-agent.md` | 产品定义（PRD） | `prd/` | `prd/` |
 | `03-architecture-agent.md` | 方案与架构设计 | `architecture/` | `arch/` |
 | `04-frontend-agent.md` | 前端研发 | `frontend/` | `frontend/` |
