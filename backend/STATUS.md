@@ -54,7 +54,7 @@
   - [ ] Webhook 设置
   - [ ] 消息接收与回复
   - [ ] 连接测试 API
-- [ ] 第二个集成（Teams or WhatsApp — 待 prd 阶段确认）
+- [ ] Microsoft Teams Bot 集成（Bot Framework SDK + Azure Bot 注册）
 - [ ] 集成配置管理 API（`/api/integrations`）
 - [ ] API Key 安全存储（环境变量 / 加密存储）
 
@@ -81,8 +81,8 @@
 
 ## 阻塞项 / 待确认问题
 
+> ✅ 第二个前端集成已确认：Microsoft Teams（2026-02-21）
 > ❗ **[阻塞]** 等待 architecture 阶段确认 LLM 选型（OpenAI vs 本地）
-> ❗ **[阻塞]** 等待 prd 阶段确认第二个前端集成（Teams vs WhatsApp）
 
 ---
 

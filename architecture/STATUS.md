@@ -11,7 +11,7 @@
 ## 3.1 高层方案设计（HLD）
 
 - [ ] 技术选型确认
-  - [?] 前端框架：Streamlit（快速原型）vs Next.js（Admin UI 复杂度高）— **待确认**
+  - [x] 前端框架：**Next.js (React)**（Admin UI 5个复杂页面，React 生态更合适）
   - [ ] 后端：FastAPI (Python)
   - [ ] 文档解析：LangChain Document Loaders
   - [ ] 向量存储：FAISS
@@ -58,10 +58,11 @@
 
 ## 阻塞项 / 待确认问题
 
-> ❓ **[待确认]** 前端框架选 Streamlit 还是 Next.js？
-> - Streamlit：Python-native，快速，但 UI 灵活性低
-> - Next.js：更好的 Admin UI，但需要前后端分离
-> （7天时限下，建议优先选 Next.js + FastAPI，因为 UI 有5个复杂页面）
+> ✅ **[已确认]** 前端框架：**Next.js (React)** + Tailwind CSS（2026-02-21）
+> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
+
+> ✅ **[已确认]** 部署方式：**Docker Compose 本地 Demo**（2026-02-21）
+> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
 
 > ❓ **[待确认]** LLM 选型：OpenAI API 还是本地 LLM（Ollama 等）？影响部署复杂度。
 

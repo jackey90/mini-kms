@@ -52,7 +52,7 @@ backend/
 │   │   └── migrations/
 │   └── integrations/     # 前端集成
 │       ├── telegram_bot.py
-│       └── teams_bot.py  (或 whatsapp.py)
+│       └── teams_bot.py
 └── tests/
 ```
 
@@ -73,7 +73,7 @@ backend/
    ↓
 7. Telegram Bot 集成
    ↓
-8. 第二个前端集成
+8. Microsoft Teams Bot 集成
    ↓
 9. Analytics 模块
    ↓
@@ -119,7 +119,8 @@ document → load() → split_chunks() → embed_chunks() → store_in_faiss()
 **必须向用户确认**：
 - LLM 选型（OpenAI vs 本地，在 architecture 阶段已有待确认问题）
 - 置信度阈值的初始值（默认 70%，但可能需要调整）
-- Telegram Webhook vs Polling 模式选择（Webhook 需要公网 URL，Polling 更简单）
+- Telegram Webhook vs Polling 模式选择（Polling 本地 Demo 更简单；Webhook 需要公网 URL）
+- Teams Bot 是否需要 Azure 账号（本地 Demo 可用 Bot Framework Emulator 测试）
 
 **不需要确认**：
 - 标准 API 实现细节

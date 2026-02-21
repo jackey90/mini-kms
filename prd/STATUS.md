@@ -17,7 +17,7 @@
 
 ### FR-01 多前端集成
 - [ ] FR-01-1: Telegram Bot 集成（API Key 配置、消息收发）
-- [?] FR-01-2: 第二个前端集成（Teams or WhatsApp — **待用户确认**）
+- [x] FR-01-2: 第二个前端集成：**Microsoft Teams**（Bot Framework + Azure Bot 注册）
 - [ ] FR-01-3: 连接状态监控 + 错误日志
 - [ ] FR-01-4: 端到端测试功能（发送测试消息验证集成）
 
@@ -73,8 +73,8 @@
 
 ## 阻塞项 / 待确认问题
 
-> ❓ **[待确认]** 第二个前端集成选哪个？Telegram 优先，第二个是 Teams 还是 WhatsApp？
-> （参考：Teams 需要 Azure 账号，WhatsApp 需要 Meta 账号）
+> ✅ **[已确认]** 第二个前端集成：**Microsoft Teams**（2026-02-21）
+> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
 
 ---
 

@@ -10,7 +10,7 @@
 
 ## 5.1 项目初始化
 
-- [ ] 技术栈确认（Next.js / Streamlit — 依赖 architecture 阶段决策）
+- [x] 技术栈确认：**Next.js (React) + Tailwind CSS**
 - [ ] 项目脚手架搭建
 - [ ] 路由结构设计
 - [ ] 通用组件库 / UI 框架选择（Tailwind CSS、shadcn/ui 等）
@@ -66,7 +66,7 @@
 
 ## 阻塞项 / 待确认问题
 
-> ❗ **[阻塞]** 等待 architecture 阶段确认前端框架选型（Next.js vs Streamlit）
+> ✅ 前端框架已确认：Next.js (React)（2026-02-21）
 > ❗ **[阻塞]** 等待 architecture 阶段完成 API Contract
 
 ---

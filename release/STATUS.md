@@ -31,10 +31,9 @@
 
 ## 7.3 Demo 部署
 
-- [?] 部署方式确认（本地 Demo vs 云端 — **待用户确认**）
-- [ ] 本地启动脚本（`./start.sh` 或 `Makefile`）
-- [ ] Docker Compose（可选，降低环境依赖）
-- [ ] 部署文档
+- [x] 部署方式确认：**本地 Demo + Docker Compose**
+- [ ] `docker-compose.yml`（一键启动 FastAPI + Next.js + 数据卷）
+- [ ] 本地启动文档（README 中的 Quick Start）
 
 ## 7.4 AI 使用反思文档（需求明确要求）
 
@@ -54,8 +53,8 @@
 
 ## 阻塞项 / 待确认问题
 
-> ❓ **[待确认]** 是否需要云端部署（Render/Vercel）？还是本地 Demo 即可？
-> （面试要求"deployed/local demo"，两者均可）
+> ✅ **[已确认]** 部署方式：本地 Demo + Docker Compose（2026-02-21）
+> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
 
 ---
 

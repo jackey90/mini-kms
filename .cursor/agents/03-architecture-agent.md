@@ -35,14 +35,11 @@
 
 以下问题在 memory 和 STATUS.md 中已标记为待确认：
 
-### 决策1：前端框架
-**选项**：
-- A. **Next.js** (React)：Admin UI 有5个复杂页面，Next.js 更合适；前后端分离，便于独立部署
-- B. **Streamlit**：Python-native，但 UI 灵活性低，难以实现需求文档中的复杂 Admin UI
-
-**建议**：Next.js（理由：5个页面含表格、上传、状态卡片等复杂组件，Streamlit 会受限）
-
-**处理方式**：向用户确认后写入 `architecture/HLD.md`
+### 决策1：前端框架 ✅ 已确认
+**结论**：**Next.js (React) + Tailwind CSS**（用户于 2026-02-21 确认）
+- 理由：Admin UI 有5个复杂页面（表格、上传区、状态卡片），React 生态更灵活
+- 架构模式：前后端分离（Next.js Admin UI 独立运行，通过 REST API 对接 FastAPI）
+- 参见：`memory/2026-02-21.md`
 
 ### 决策2：LLM 选型
 **选项**：
@@ -88,7 +85,6 @@
 ## 二次确认规则
 
 **必须向用户确认**：
-- 前端框架选型（上方决策1）
 - LLM 选型（上方决策2）
 - API 设计中涉及安全性的决定（如认证方式）
 - 任何会显著影响开发工作量的架构决策
