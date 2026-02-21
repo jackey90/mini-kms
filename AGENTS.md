@@ -29,12 +29,12 @@
 | Agent 文件 | 负责阶段 | 对应目录 | 分支前缀 |
 |-----------|---------|---------|---------|
 | `discovery-agent.md` | 市场与用户研究 | `discovery/` | `discovery/` |
-| `02-prd-agent.md` | 产品定义（PRD） | `prd/` | `prd/` |
-| `03-architecture-agent.md` | 方案与架构设计 | `architecture/` | `arch/` |
-| `04-frontend-agent.md` | 前端研发 | `frontend/` | `frontend/` |
-| `05-backend-agent.md` | 后端研发 | `backend/` | `backend/` |
-| `06-qa-agent.md` | 测试与质量 | `qa/` | `qa/` |
-| `07-release-agent.md` | 发布上线 | `release/` | `release/` |
+| `prd-agent.md` | 产品定义（PRD） | `prd/` | `prd/` |
+| `architecture-agent.md` | 方案与架构设计 | `architecture/` | `arch/` |
+| `frontend-agent.md` | 前端研发 | `frontend/` | `frontend/` |
+| `backend-agent.md` | 后端研发 | `backend/` | `backend/` |
+| `qa-agent.md` | 测试与质量 | `qa/` | `qa/` |
+| `release-agent.md` | 发布上线 | `release/` | `release/` |
 
 **使用方式**：在 Cursor 中 @ 对应阶段目录，或直接在对话中说明当前处于哪个阶段，Agent 会自动读取对应的指令文件。
 
