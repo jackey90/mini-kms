@@ -27,7 +27,7 @@
 - [ ] PDF 解析（LangChain PDFLoader / pypdf）
 - [ ] DOCX 解析（LangChain Docx2txtLoader）
 - [ ] 文本分块策略（RecursiveCharacterTextSplitter）
-- [ ] 向量化（OpenAI Embeddings 或 sentence-transformers）
+- [ ] 向量化（OpenAI `text-embedding-3-small`）
 - [ ] FAISS 索引构建与持久化
 - [ ] 文档列表 API（`GET /api/documents`）
 - [ ] 文档删除 API（`DELETE /api/documents/{id}`）
@@ -82,7 +82,8 @@
 ## 阻塞项 / 待确认问题
 
 > ✅ 第二个前端集成已确认：Microsoft Teams（2026-02-21）
-> ❗ **[阻塞]** 等待 architecture 阶段确认 LLM 选型（OpenAI vs 本地）
+> ✅ LLM 选型已确认：OpenAI API（gpt-3.5-turbo + text-embedding-3-small）（2026-02-21）
+> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
 
 ---
 

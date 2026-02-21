@@ -12,11 +12,11 @@
 
 - [ ] 技术选型确认
   - [x] 前端框架：**Next.js (React)**（Admin UI 5个复杂页面，React 生态更合适）
-  - [ ] 后端：FastAPI (Python)
-  - [ ] 文档解析：LangChain Document Loaders
-  - [ ] 向量存储：FAISS
-  - [ ] 关系型存储：SQLite
-  - [ ] 意图分类：OpenAI / 本地 LLM（zero-shot 分类）
+  - [x] 后端：FastAPI (Python)
+  - [x] 文档解析：LangChain Document Loaders（PyPDFLoader + Docx2txtLoader）
+  - [x] 向量存储：FAISS（本地持久化）
+  - [x] 关系型存储：SQLite
+  - [x] LLM：**OpenAI API**（gpt-3.5-turbo 意图分类+响应生成，text-embedding-3-small 向量化）
 - [ ] 系统边界与模块划分
 - [ ] 关键链路设计（查询处理完整流程）
 - [ ] 风险与回滚策略
@@ -64,7 +64,8 @@
 > ✅ **[已确认]** 部署方式：**Docker Compose 本地 Demo**（2026-02-21）
 > 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
 
-> ❓ **[待确认]** LLM 选型：OpenAI API 还是本地 LLM（Ollama 等）？影响部署复杂度。
+> ✅ **[已确认]** LLM 选型：**OpenAI API**（gpt-3.5-turbo + text-embedding-3-small）（2026-02-21）
+> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
 
 ---
 

@@ -85,10 +85,10 @@ backend/
 - **Web 框架**：FastAPI（async/await）
 - **文档解析**：LangChain Document Loaders（PyPDFLoader、Docx2txtLoader）
 - **文本分块**：RecursiveCharacterTextSplitter（chunk_size=500, overlap=50）
-- **向量化**：OpenAI `text-embedding-ada-002` 或 `text-embedding-3-small`
+- **向量化**：OpenAI `text-embedding-3-small`
 - **向量存储**：FAISS（本地持久化到 `data/faiss_index/`）
-- **意图分类**：OpenAI GPT-3.5/4 zero-shot，Prompt 包含意图空间描述
-- **响应生成**：RAG 链路，使用 LangChain RetrievalQA 或自定义链
+- **意图分类**：OpenAI `gpt-3.5-turbo` zero-shot，Prompt 包含意图空间名称+描述
+- **响应生成**：RAG 链路，使用 LangChain RetrievalQA 或自定义链（`gpt-3.5-turbo`）
 - **ORM**：SQLAlchemy（轻量，与 SQLite 搭配）
 - **配置**：python-dotenv，所有 Key 通过环境变量
 
@@ -117,7 +117,6 @@ document → load() → split_chunks() → embed_chunks() → store_in_faiss()
 ## 二次确认规则
 
 **必须向用户确认**：
-- LLM 选型（OpenAI vs 本地，在 architecture 阶段已有待确认问题）
 - 置信度阈值的初始值（默认 70%，但可能需要调整）
 - Telegram Webhook vs Polling 模式选择（Polling 本地 Demo 更简单；Webhook 需要公网 URL）
 - Teams Bot 是否需要 Azure 账号（本地 Demo 可用 Bot Framework Emulator 测试）
