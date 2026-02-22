@@ -1,0 +1,41 @@
+---
+description: Route changes to the correct sub-agent and commit with proper conventions
+alwaysApply: true
+---
+
+# Agent Delegation & Git Commit Workflow
+
+When a task involves changes, determine which phase it belongs to and delegate accordingly.
+
+## Phase → Agent Mapping
+
+| Change Type | Agent File | Directory | Branch Prefix | Commit Tag |
+|-------------|-----------|-----------|---------------|------------|
+| Market/user research | `discovery-agent.md` | `discovery/` | `discovery/` | `[discovery]` |
+| Product requirements | `prd-agent.md` | `prd/` | `prd/` | `[prd]` |
+| Architecture/design docs | `architecture-agent.md` | `architecture/` | `arch/` | `[arch]` |
+| Frontend (Streamlit UI) | `frontend-agent.md` | `frontend/` | `frontend/` | `[frontend]` |
+| Backend (FastAPI/ML/DB) | `backend-agent.md` | `backend/` | `backend/` | `[backend]` |
+| Testing/QA | `qa-agent.md` | `qa/` | `qa/` | `[qa]` |
+| Release/deployment | `release-agent.md` | `release/` | `release/` | `[release]` |
+
+## Workflow
+
+1. **Read the agent file** — Before starting, read `.cursor/agents/<phase>-agent.md` for phase-specific conventions
+2. **Read context** — Check the phase `STATUS.md` and latest `memory/` file
+3. **Do the work** — Follow the agent's instructions to implement changes
+4. **Update STATUS.md** — Mark completed tasks `[x]`, in-progress `[~]`
+5. **Update memory** — Write decisions to `memory/YYYY-MM-DD.md`
+6. **Git commit** — Use the phase commit format:
+
+```
+[phase] Verb + short description
+
+Memory: memory/YYYY-MM-DD.md
+```
+
+## Cross-Phase Changes
+
+If a task spans multiple phases (e.g. backend code + architecture doc update):
+- Make separate commits per phase, each with its own `[phase]` tag
+- Update each phase's `STATUS.md` independently
