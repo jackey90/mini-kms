@@ -1,107 +1,107 @@
-# AGENTS.md — IntelliKnow KMS AI 驱动开发指南
+# AGENTS.md — IntelliKnow KMS AI Development Guide
 
-> 本文件是 AI 编码助手（Cursor）的项目总入口。所有 Agent 在启动前必须先读取本文件。
+> This file is the main entry point for AI coding assistants (Cursor). All agents must read this file before starting work.
 
-## 项目概述
+## Project Overview
 
-**IntelliKnow KMS** — 企业级 Gen AI 知识管理系统
+**IntelliKnow KMS** — Enterprise-grade Gen AI Knowledge Management System
 
-| 属性 | 值 |
-|------|-----|
-| 项目性质 | Tech Lead 面试项目（7天完成） |
-| 核心需求文档 | `AD, Tech Lead, AKP.md` |
-| 开发流程参考 | `software_rnd_full_process.md` |
-| 技术栈 | Python (FastAPI) + SQLite/FAISS + React/Next.js |
+| Attribute | Value |
+|-----------|-------|
+| Project Type | Tech Lead interview project (7 days) |
+| Core Requirements | `AD, Tech Lead, AKP.md` |
+| Development Process | `software_rnd_full_process.md` |
+| Tech Stack | Python (FastAPI + Streamlit) + SQLite/FAISS + OpenAI API |
 
-**核心功能三件套**：
-1. 多前端集成（Telegram + Teams/WhatsApp）
-2. 文档驱动知识库（PDF/DOCX 自动解析）
-3. 查询意图编排器（HR/Legal/Finance 分类路由）
+**Core Features**:
+1. Multi-frontend integration (Telegram + Microsoft Teams)
+2. Document-driven knowledge base (PDF/DOCX auto-parsing)
+3. Query intent orchestrator (HR/Legal/Finance classification routing)
 
-详见 `AD, Tech Lead, AKP.md` 完整需求规格。
-
----
-
-## Agent 索引
-
-每个开发阶段对应一个 Agent 指令文件，位于 `.cursor/agents/`：
-
-| Agent 文件 | 负责阶段 | 对应目录 | 分支前缀 |
-|-----------|---------|---------|---------|
-| `discovery-agent.md` | 市场与用户研究 | `discovery/` | `discovery/` |
-| `prd-agent.md` | 产品定义（PRD） | `prd/` | `prd/` |
-| `architecture-agent.md` | 方案与架构设计 | `architecture/` | `arch/` |
-| `frontend-agent.md` | 前端研发 | `frontend/` | `frontend/` |
-| `backend-agent.md` | 后端研发 | `backend/` | `backend/` |
-| `qa-agent.md` | 测试与质量 | `qa/` | `qa/` |
-| `release-agent.md` | 发布上线 | `release/` | `release/` |
-
-**使用方式**：在 Cursor 中 @ 对应阶段目录，或直接在对话中说明当前处于哪个阶段，Agent 会自动读取对应的指令文件。
+See `AD, Tech Lead, AKP.md` for complete requirements.
 
 ---
 
-## Memory 系统
+## Agent Index
 
-### 目的
-记录每天与用户的讨论原始内容、决策结论和待确认问题，作为项目的"决策日志"。
+Each development phase has a corresponding agent instruction file in `.cursor/agents/`:
 
-### 目录
-所有记录存放于 `memory/` 目录，按日期命名：`memory/YYYY-MM-DD.md`
+| Agent File | Phase | Directory | Branch Prefix |
+|-----------|-------|-----------|---------------|
+| `discovery-agent.md` | Market & User Research | `discovery/` | `discovery/` |
+| `prd-agent.md` | Product Definition (PRD) | `prd/` | `prd/` |
+| `architecture-agent.md` | Solution & Architecture | `architecture/` | `arch/` |
+| `frontend-agent.md` | Frontend Development | `frontend/` | `frontend/` |
+| `backend-agent.md` | Backend Development | `backend/` | `backend/` |
+| `qa-agent.md` | Testing & Quality | `qa/` | `qa/` |
+| `release-agent.md` | Release & Launch | `release/` | `release/` |
 
-### 文件格式
+**Usage**: In Cursor, @ the relevant phase directory, or state which phase you're in and the agent will read the corresponding instruction file.
+
+---
+
+## Memory System
+
+### Purpose
+Record daily discussion content, decision conclusions, and open questions as a "decision log" for the project.
+
+### Directory
+All records stored in `memory/` directory, named by date: `memory/YYYY-MM-DD.md`
+
+### File Format
 
 ```markdown
-# YYYY-MM-DD 项目讨论记录
+# YYYY-MM-DD Project Discussion Log
 
-## 讨论原始记录
-（当日对话的关键内容摘录）
+## Discussion Notes
+(Key content from today's conversation)
 
-## 结论与决策
-（已确认的技术/产品/架构决定，格式：✅ 决定内容）
+## Conclusions & Decisions
+(Confirmed technical/product/architecture decisions, format: ✅ Decision)
 
-## 待确认问题
-（还未解决的疑问，格式：❓ 问题内容）
+## Open Questions
+(Unresolved questions, format: ❓ Question)
 
-## 关联任务
-（本日讨论影响到的 STATUS.md，格式：- phase/STATUS.md）
+## Related Tasks
+(STATUS.md files affected by today's discussion, format: - phase/STATUS.md)
 ```
 
-### Agent 更新 Memory 的规则
-- 每次与用户确认了关键问题后，将结论写入当日 memory 文件的"结论与决策"
-- 对话中出现的模糊需求，写入"待确认问题"
-- 完成某阶段工作后，在对应 memory 文件的"关联任务"中记录
+### Agent Rules for Updating Memory
+- After confirming a key decision with the user, write the conclusion into today's memory file under "Conclusions & Decisions"
+- Ambiguous requirements encountered during conversation go into "Open Questions"
+- After completing a phase, record it in the "Related Tasks" section of the memory file
 
 ---
 
-## STATUS.md 规范
+## STATUS.md Convention
 
-每个阶段目录下有一个 `STATUS.md` 文件，记录该阶段的任务进度。
+Each phase directory has a `STATUS.md` file tracking task progress.
 
-### 任务状态标记
-| 标记 | 含义 |
-|------|------|
-| `[ ]` | 待开始 |
-| `[~]` | 进行中 |
-| `[x]` | 已完成 |
-| `[?]` | 待确认（需要用户输入） |
-| `[!]` | 阻塞（有依赖未解决） |
+### Task Status Markers
+| Marker | Meaning |
+|--------|---------|
+| `[ ]` | Not started |
+| `[~]` | In progress |
+| `[x]` | Completed |
+| `[?]` | Needs confirmation (requires user input) |
+| `[!]` | Blocked (unresolved dependency) |
 
-### Agent 更新 STATUS.md 的规则
-1. 开始某个子任务前，将其标记为 `[~]`
-2. 完成后改为 `[x]`，并在下方注记完成时间和关联 memory 链接
-3. 遇到不清晰的地方，标记 `[?]` 并在 memory 当日文件中记录问题
+### Agent Rules for Updating STATUS.md
+1. Before starting a subtask, mark it as `[~]`
+2. When complete, change to `[x]` and add a completion timestamp with memory link
+3. When something is unclear, mark `[?]` and record the question in today's memory file
 
 ---
 
-## Git 分支与 Commit 规范
+## Git Branch & Commit Convention
 
-### 分支命名
+### Branch Naming
 
 ```
 <phase>/<short-description>
 ```
 
-示例：
+Examples:
 - `prd/functional-requirements`
 - `arch/api-contract-design`
 - `frontend/admin-dashboard`
@@ -109,7 +109,7 @@
 - `qa/integration-test`
 - `release/v1.0.0`
 
-### Commit Message 格式
+### Commit Message Format
 
 **English only.** Format:
 
@@ -132,31 +132,31 @@ Memory: memory/2026-02-21.md
 Memory: memory/2026-02-22.md
 ```
 
-### 规则
-- 每个阶段的工作在对应 branch 上进行，完成后 merge 到 `main`
-- 每次 commit 必须带 `Memory:` 行，指向包含该工作决策背景的 memory 文件
-- 不同阶段的变更不混在一个 commit 里
+### Rules
+- Each phase's work is done on the corresponding branch, then merged to `main`
+- Every commit must include the `Memory:` line pointing to the memory file with the decision context
+- Changes from different phases must not be mixed in one commit
 
 ---
 
-## Agent 通用工作规则
+## Agent General Rules
 
-1. **读取上下文**：开始工作前先读取 `AD, Tech Lead, AKP.md`、当前阶段的 `STATUS.md`、以及最近的 `memory/` 文件
-2. **遇到歧义必须确认**：需求不清晰时，先在 memory 文件中记录问题，然后向用户提问，不要自行假设
-3. **更新进度**：完成每个子任务后立即更新 `STATUS.md` 和根目录 `PROJECT_STATUS.md`
-4. **记录决策**：每次与用户确认了什么，都写入当日 memory 文件
-5. **原子提交**：每个 commit 只包含一个逻辑变更单元
-6. **不跨阶段**：不要在当前阶段的 commit 中混入其他阶段的内容
+1. **Read context first**: Before starting work, read `AD, Tech Lead, AKP.md`, the current phase's `STATUS.md`, and the latest `memory/` file
+2. **Always confirm ambiguity**: When requirements are unclear, record the question in the memory file and ask the user — do not assume
+3. **Update progress**: After completing each subtask, immediately update `STATUS.md` and the root `PROJECT_STATUS.md`
+4. **Record decisions**: After every confirmed decision with the user, write it into today's memory file
+5. **Atomic commits**: Each commit contains exactly one logical unit of change
+6. **No cross-phase mixing**: Do not include other phase changes in the current phase's commits
 
-## 语言规范
+## Language Convention
 
-| 文件类型 | 语言 |
-|---------|------|
-| 源代码（所有语言）| **English only** |
-| 代码注释 | **English only** |
-| 技术设计文档（HLD/LLD/API Contract/Data Model/Algorithm Arch）| **English only** |
+| File Type | Language |
+|-----------|----------|
+| Source code (all languages) | **English only** |
+| Code comments | **English only** |
+| Technical design docs (HLD/LLD/API Contract/Data Model/Algorithm Arch) | **English only** |
 | README.md / AI-USAGE.md | **English only** |
-| git commit message | **English only** |
-| STATUS.md（进度追踪）| 中文（内部使用） |
-| memory/（讨论记录）| 中文（内部使用） |
-| AGENTS.md / agent 指令文件 | 中文（内部使用） |
+| Git commit messages | **English only** |
+| STATUS.md (progress tracking) | **English only** |
+| memory/ (discussion logs) | **English only** |
+| AGENTS.md / agent instruction files | **English only** |

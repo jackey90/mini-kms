@@ -1,86 +1,86 @@
-# QA 阶段状态
+# QA Phase Status
 
-> 对应开发流程：Phase 5.5 测试与质量工程 + Phase 6 集成与验证
+> Corresponds to development process: Phase 5.5 — Testing & Quality Engineering + Phase 6 — Integration & Validation
 
-**阶段目标**：验证所有功能需求和非功能需求，完成 UAT 签字，产出上线清单。
+**Phase Goal**: Verify all functional and non-functional requirements, complete UAT sign-off, and produce a release checklist.
 
-**前置条件**：`frontend/STATUS.md` 和 `backend/STATUS.md` 中核心功能均已完成。
+**Prerequisites**: Core features in both `frontend/STATUS.md` and `backend/STATUS.md` must be complete.
 
 ---
 
-## 6.1 功能测试（Functional Testing）
+## 6.1 Functional Testing
 
-### 文档管理
-- [ ] QA-01: 上传 PDF 文档，验证解析成功，状态变为 Processed
-- [ ] QA-02: 上传 DOCX 文档，验证解析成功
-- [ ] QA-03: 上传不支持格式，验证错误提示
-- [ ] QA-04: 删除文档，验证从 KB 中移除
-- [ ] QA-05: 重新解析文档，验证更新生效
+### Document Management
+- [ ] QA-01: Upload PDF document, verify parsing succeeds and status changes to Processed
+- [ ] QA-02: Upload DOCX document, verify parsing succeeds
+- [ ] QA-03: Upload unsupported format, verify error message appears
+- [ ] QA-04: Delete document, verify removal from KB
+- [ ] QA-05: Re-parse document, verify update takes effect
 
-### 意图空间
-- [ ] QA-06: 验证3个默认意图空间（HR/Legal/Finance）存在
-- [ ] QA-07: 创建自定义意图空间，验证可用
-- [ ] QA-08: 编辑意图空间名称/描述，验证更新
-- [ ] QA-09: 删除意图空间，验证关联查询不受影响
+### Intent Spaces
+- [ ] QA-06: Verify 3 default intent spaces (HR/Legal/Finance) exist
+- [ ] QA-07: Create custom intent space, verify it is usable
+- [ ] QA-08: Edit intent space name/description, verify update
+- [ ] QA-09: Delete intent space, verify associated queries are not affected
 
-### 查询编排
-- [ ] QA-10: HR 相关问题 → 正确分类到 HR 意图空间
-- [ ] QA-11: Legal 相关问题 → 正确分类到 Legal 意图空间
-- [ ] QA-12: 模糊问题 → 降级到 General 空间，有清晰提示
-- [ ] QA-13: 响应中包含引用来源
-- [ ] QA-14: 知识库无相关内容时，响应清晰说明"未找到匹配"
+### Query Orchestration
+- [ ] QA-10: HR-related question → correctly classified to HR intent space
+- [ ] QA-11: Legal-related question → correctly classified to Legal intent space
+- [ ] QA-12: Ambiguous question → falls back to General space with clear message
+- [ ] QA-13: Response includes citation source
+- [ ] QA-14: When KB has no relevant content, response clearly states "no match found"
 
-### 前端集成
-- [ ] QA-15: Telegram Bot 接收消息并在 ≤3秒 内响应
-- [ ] QA-16: Telegram 测试按钮成功发送示例查询
-- [ ] QA-17: 第二个前端集成（Teams/WhatsApp）接收并响应消息
-- [ ] QA-18: 断开连接时状态卡片显示 Disconnected
+### Frontend Integration
+- [ ] QA-15: Telegram Bot receives message and responds within ≤3 seconds
+- [ ] QA-16: Telegram test button successfully sends sample query
+- [ ] QA-17: Second frontend integration (Teams) receives and responds to messages
+- [ ] QA-18: When disconnected, status card shows Disconnected
 
 ### Admin UI
-- [ ] QA-19: 5个核心页面均可访问，无空白页/500错误
-- [ ] QA-20: 所有操作按钮有响应（加载中、成功、失败状态）
+- [ ] QA-19: All 5 core pages accessible, no blank pages / 500 errors
+- [ ] QA-20: All action buttons are responsive (loading, success, failure states)
 
-### 分析
-- [ ] QA-21: 每次查询后，日志表格中新增一条记录
-- [ ] QA-22: 导出功能可下载数据文件
+### Analytics
+- [ ] QA-21: After each query, a new record appears in the log table
+- [ ] QA-22: Export function downloads a data file
 
-## 6.2 非功能测试
+## 6.2 Non-Functional Testing
 
-- [ ] NFR-QA-01: 并发测试（5个并发查询，响应均 ≤3秒）
-- [ ] NFR-QA-02: API Key 不在前端页面明文显示（仅末4位）
-- [ ] NFR-QA-03: 服务从零启动（`README` 步骤验证，无需外部依赖）
+- [ ] NFR-QA-01: Concurrency test (5 concurrent queries, all respond within ≤3 seconds)
+- [ ] NFR-QA-02: API Key not displayed in plaintext on frontend (last 4 digits only)
+- [ ] NFR-QA-03: Service starts from zero (README steps verified, no external dependencies)
 
-## 6.3 系统集成测试（SIT）
+## 6.3 System Integration Testing (SIT)
 
-- [ ] SIT-01: 前端 → 后端 API 全链路联调（Admin UI 所有操作）
-- [ ] SIT-02: 前端集成 → 编排器 → KB → 响应全链路
-- [ ] SIT-03: 数据一致性验证（上传文档 → 可被检索 → 出现在统计中）
+- [ ] SIT-01: Frontend → Backend API full-chain test (all Admin UI operations)
+- [ ] SIT-02: Frontend integration → Orchestrator → KB → Response full chain
+- [ ] SIT-03: Data consistency validation (upload document → searchable → appears in stats)
 
-## 6.4 验收测试（UAT）
+## 6.4 User Acceptance Testing (UAT)
 
-基于需求文档的验收标准：
-- [ ] UAT-01: ≥2 个前端工具完成集成并可发送/接收查询
-- [ ] UAT-02: ≥2 种文档格式上传成功并可被查询
-- [ ] UAT-03: 意图空间可定义和管理，查询可被正确分类
-- [ ] UAT-04: 响应准确、带引用、上下文相关
-- [ ] UAT-05: Admin UI 5个页面功能完整
+Based on requirements document acceptance criteria:
+- [ ] UAT-01: ≥2 frontend tools integrated and able to send/receive queries
+- [ ] UAT-02: ≥2 document formats uploaded successfully and queryable
+- [ ] UAT-03: Intent spaces can be defined/managed, queries correctly classified
+- [ ] UAT-04: Responses are accurate, cited, and context-aware
+- [ ] UAT-05: Admin UI 5 pages fully functional
 
-## 6.5 缺陷记录
+## 6.5 Bug Log
 
-> 发现缺陷在此处记录，格式：`- [ ] [BUG-xx] 描述`（修复后标记 `[x]`）
+> Record bugs found here, format: `- [ ] [BUG-xx] Description` (mark `[x]` when fixed)
 
-（待开发完成后填入）
-
----
-
-## 阻塞项 / 待确认问题
-
-> ❗ **[阻塞]** 等待 frontend 和 backend 阶段核心功能完成
+(To be filled after development is complete)
 
 ---
 
-## 完成记录
+## Blockers / Open Questions
 
-| 时间 | 完成事项 | Memory 链接 |
-|------|---------|------------|
-| 2026-02-21 | QA 阶段框架搭建，验收标准提取自需求文档 | [memory/2026-02-21.md](../memory/2026-02-21.md) |
+> ❗ **[Blocked]** Waiting for frontend and backend core features to be complete
+
+---
+
+## Completion Log
+
+| Time | Completed | Memory Link |
+|------|-----------|-------------|
+| 2026-02-21 | QA phase scaffolding, acceptance criteria extracted from requirements doc | [memory/2026-02-21.md](../memory/2026-02-21.md) |

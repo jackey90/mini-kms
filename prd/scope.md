@@ -1,91 +1,91 @@
-# IntelliKnow KMS — MVP 范围与里程碑
+# IntelliKnow KMS — MVP Scope & Milestones
 
-## 1. MVP 目标
+## 1. MVP Goal
 
-在 **7个日历日** 内交付一个可演示的 IntelliKnow KMS，满足以下核心目标：
-- 通过 Telegram + Teams 两个渠道接收并回答企业知识查询
-- 支持 PDF / DOCX 文档自动解析并构建可检索知识库
-- 通过意图分类路由到 HR / Legal / Finance 三个知识域
-- Admin 可通过 Web 界面管理文档、意图空间和查看分析数据
-
----
-
-## 2. MVP 功能边界（In Scope）
-
-### P0 — 必须交付（核心演示路径）
-
-| 功能 | 说明 |
-|------|------|
-| Telegram Bot 消息收发 | Bot Token 配置、接收消息、返回 RAG 响应 |
-| PDF / DOCX 文档上传与解析 | Admin UI 上传 → LangChain 解析 → FAISS 向量化 → 可查询 |
-| 意图分类路由 | 3个默认空间（HR / Legal / Finance）+ General 兜底 |
-| RAG 检索响应 | 语义检索 + LLM 生成带来源引用的回答 |
-| Admin KB Management 页面 | 文档列表、上传、删除、状态查看 |
-| Admin Intent Configuration 页面 | 意图空间 CRUD + 查询分类日志 |
-
-### P1 — 应该交付（完整演示）
-
-| 功能 | 说明 |
-|------|------|
-| Microsoft Teams Bot | Bot Framework 集成，消息收发 |
-| Admin Dashboard 主页 | 4个模块状态卡片 |
-| Admin Frontend Integration 页面 | 连接状态 + 测试按钮 |
-| Admin Analytics 页面 | 查询历史表格 + KB 使用统计 |
-| 数据导出 | CSV 导出查询日志 |
-
-### P2 — 可选（时间允许）
-
-| 功能 | 说明 |
-|------|------|
-| 文档重新解析 | 更新文档内容后触发重新向量化 |
-| 移动端响应式 Admin UI | 桌面优先，移动端可选 |
-| 意图分类置信度可配置 | Admin 界面调整阈值（默认 70% 已足够） |
+Deliver a demonstrable IntelliKnow KMS within **7 calendar days** that achieves the following core objectives:
+- Receive and answer enterprise knowledge queries via Telegram + Teams (2 channels)
+- Support PDF / DOCX document auto-parsing to build a searchable knowledge base
+- Route queries via intent classification to HR / Legal / Finance knowledge domains
+- Allow Admin to manage documents, intent spaces, and view analytics via a web UI
 
 ---
 
-## 3. Non-Goals（MVP 不做）
+## 2. MVP Feature Boundary (In Scope)
 
-| 不做 | 原因 |
-|------|------|
-| 用户认证 / 权限管理 | MVP 单用户场景，时间有限 |
-| 多租户 / 多企业支持 | 超出 7 天范围 |
-| 云端部署 | 本地 Docker Compose 已满足演示要求 |
-| 第三方 SSO（LDAP / SAML） | 超出 MVP 范围 |
-| 实时流式响应（Streaming） | Polling 模式已满足 ≤3s 要求 |
-| 文档版本管理 | 仅支持覆盖更新 |
-| 移动端原生 App | Web Admin UI 已满足 |
-| Slack / WhatsApp 集成 | MVP 仅做 Telegram + Teams |
-| 模型微调 / 自定义 Embedding | 使用 OpenAI API 已满足准确率要求 |
+### P0 — Must Deliver (core demo path)
+
+| Feature | Description |
+|---------|-------------|
+| Telegram Bot messaging | Bot Token config, receive messages, return RAG responses |
+| PDF / DOCX upload & parsing | Admin UI upload → LangChain parse → FAISS vectorize → queryable |
+| Intent classification routing | 3 default spaces (HR / Legal / Finance) + General fallback |
+| RAG retrieval response | Semantic search + LLM generates cited answer |
+| Admin KB Management page | Document list, upload, delete, status view |
+| Admin Intent Configuration page | Intent space CRUD + query classification log |
+
+### P1 — Should Deliver (complete demo)
+
+| Feature | Description |
+|---------|-------------|
+| Microsoft Teams Bot | Bot Framework integration, messaging |
+| Admin Dashboard home | 4 module status metric cards |
+| Admin Frontend Integration page | Connection status + test button |
+| Admin Analytics page | Query history table + KB usage stats |
+| Data export | CSV export of query logs |
+
+### P2 — Optional (if time allows)
+
+| Feature | Description |
+|---------|-------------|
+| Document re-parsing | Re-trigger vectorization after document content update |
+| Mobile responsive Admin UI | Desktop-first, mobile optional |
+| Configurable intent confidence threshold | Adjust threshold in Admin UI (default 70% is sufficient) |
 
 ---
 
-## 4. Day 1-7 里程碑计划
+## 3. Non-Goals (out of MVP scope)
 
-| 日期 | 里程碑 | 主要任务 | 交付物 |
-|------|--------|---------|--------|
-| **Day 1** | 架构 + 项目骨架 | 架构设计（HLD/LLD/API Contract/DB Schema）；后端 FastAPI 初始化；前端 Next.js 初始化；Docker Compose 骨架 | `architecture/` 文档；可运行的空项目 |
-| **Day 2** | 文档解析 Pipeline | PDF/DOCX 上传 API；LangChain 解析；FAISS 向量化；文档管理 CRUD API | `POST /documents` 可用；文档可被检索 |
-| **Day 3** | 意图分类 + RAG | OpenAI zero-shot 意图分类；FAISS 语义检索；LLM 响应生成；查询 API | `POST /query` 端到端可用 |
-| **Day 4** | Telegram Bot | Telegram Bot Polling 模式；消息路由到查询 API；回复格式适配 | Telegram Bot 可接收问题并回答 |
-| **Day 5** | Admin UI 核心页面 | Next.js KB Management 页面；Intent Configuration 页面；API 对接 | Admin 可上传文档、管理意图空间 |
-| **Day 6** | Teams Bot + Analytics | Teams Bot Framework 集成；Analytics 页面；Dashboard；Frontend Integration 页面 | 双 Bot 均可用；Admin 界面完整 |
-| **Day 7** | 集成测试 + 交付 | 端到端联调；README 文档；AI-USAGE.md；Demo 录制/验证；Docker Compose 完整测试 | 完整可演示的系统 |
+| Non-goal | Reason |
+|----------|--------|
+| User authentication / access control | MVP single-user scenario, time limited |
+| Multi-tenant / multi-enterprise support | Out of 7-day scope |
+| Cloud deployment | Local Docker Compose satisfies demo requirements |
+| Third-party SSO (LDAP / SAML) | Out of MVP scope |
+| Real-time streaming responses | Polling mode meets ≤3s requirement |
+| Document version management | Only overwrite updates supported |
+| Native mobile app | Web Admin UI is sufficient |
+| Slack / WhatsApp integration | MVP only does Telegram + Teams |
+| Model fine-tuning / custom embeddings | OpenAI API meets accuracy requirements |
 
-### 关键路径
+---
+
+## 4. Day 1-7 Milestone Plan
+
+| Day | Milestone | Key Tasks | Deliverables |
+|-----|-----------|-----------|-------------|
+| **Day 1** | Architecture + project skeleton | Architecture design (HLD/LLD/API Contract/DB Schema); FastAPI project init; Streamlit app init; Docker Compose skeleton | `architecture/` docs; runnable empty project |
+| **Day 2** | Document parsing pipeline | PDF/DOCX upload API; LangChain parsing; FAISS vectorization; document CRUD API | `POST /documents` working; documents searchable |
+| **Day 3** | Intent classification + RAG | OpenAI zero-shot intent classification; FAISS semantic search; LLM response generation; query API | `POST /query` end-to-end working |
+| **Day 4** | Telegram Bot | Telegram Bot Polling mode; message routing to query API; reply format adaptation | Telegram Bot receives questions and answers |
+| **Day 5** | Admin UI core pages | Streamlit KB Management page; Intent Configuration page; API integration | Admin can upload docs and manage intent spaces |
+| **Day 6** | Teams Bot + Analytics | Teams Bot Framework integration; Analytics page; Dashboard; Frontend Integration page | Both Bots working; Admin UI complete |
+| **Day 7** | Integration testing + delivery | End-to-end integration; README; AI-USAGE.md; Demo validation; Docker Compose full test | Complete demonstrable system |
+
+### Critical Path
 
 ```
-DB Schema → 文档解析 → RAG 检索 → 查询 API → Telegram Bot（P0 核心路径）
-                                              ↘ Teams Bot（P1）
-                                 ↗ Admin UI（并行开发，Day 5）
+DB Schema → Document Parsing → RAG Retrieval → Query API → Telegram Bot  (P0 core path)
+                                                           ↘ Teams Bot    (P1)
+                                          ↗ Admin UI (parallel, Day 5)
 ```
 
 ---
 
-## 5. 依赖与风险
+## 5. Dependencies & Risks
 
-| 依赖/风险 | 描述 | 缓解措施 |
-|-----------|------|---------|
-| OpenAI API Key | 需要有效的 OpenAI API Key | 提前准备，.env 配置 |
-| Teams Bot 注册复杂度 | Azure Bot 注册流程可能耗时 | Day 1 即评估，若超过半天改为 Mock |
-| Telegram Polling 模式 | 本地 Demo 无需 Webhook，Polling 更简单 | 默认使用 Polling |
-| LLM 分类准确率 | zero-shot 可能低于 70% | Day 3 验证，不达标则增加意图关键词提示 |
+| Dependency/Risk | Description | Mitigation |
+|-----------------|-------------|------------|
+| OpenAI API Key | Requires valid OpenAI API Key | Prepare in advance, configure via .env |
+| Teams Bot registration complexity | Azure Bot registration process may be time-consuming | Evaluate on Day 1; if it takes more than half a day, use Mock |
+| Telegram Polling mode | Local demo doesn't need Webhook; Polling is simpler | Use Polling by default |
+| LLM classification accuracy | Zero-shot may fall below 70% | Validate on Day 3; if insufficient, add intent keyword hints to prompt |

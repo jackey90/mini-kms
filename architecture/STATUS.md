@@ -1,76 +1,76 @@
-# Architecture 阶段状态
+# Architecture Phase Status
 
-> 对应开发流程：Phase 3 方案与架构设计（Solution & Architecture）
+> Corresponds to development process: Phase 3 — Solution & Architecture Design
 
-**阶段目标**：确定技术选型、系统边界、API Contract 和数据模型，为开发阶段提供清晰蓝图。
+**Phase Goal**: Confirm tech stack, system boundaries, API Contract, and data model to provide a clear blueprint for development.
 
-**前置条件**：`prd/STATUS.md` 中所有 FR/NFR 完成，待确认问题已解答。
-
----
-
-## 3.1 高层方案设计（HLD）
-
-- [ ] 技术选型确认
-  - [x] 前端框架：**Next.js (React)**（Admin UI 5个复杂页面，React 生态更合适）
-  - [x] 后端：FastAPI (Python)
-  - [x] 文档解析：LangChain Document Loaders（PyPDFLoader + Docx2txtLoader）
-  - [x] 向量存储：FAISS（本地持久化）
-  - [x] 关系型存储：SQLite
-  - [x] LLM：**OpenAI API**（gpt-3.5-turbo 意图分类+响应生成，text-embedding-3-small 向量化）
-- [ ] 系统边界与模块划分
-- [ ] 关键链路设计（查询处理完整流程）
-- [ ] 风险与回滚策略
-- 产出：`architecture/HLD.md`
-
-## 3.2 详细设计（LLD）
-
-- [ ] 模块划分（`backend/` 下的包结构）
-- [ ] REST API Contract 定义
-  - [ ] 文档管理 API（上传/列表/删除/重解析）
-  - [ ] 意图空间管理 API（CRUD）
-  - [ ] 查询 API（提交查询 → 返回分类 + 响应）
-  - [ ] 分析 API（查询历史、KB 使用统计）
-  - [ ] 前端集成管理 API（配置 / 测试连接）
-- [ ] 数据模型 / ERD（SQLite Schema）
-- [ ] 异常处理与降级策略
-- 产出：`architecture/LLD.md`、`architecture/api-contract.md`、`architecture/data-model.md`
-
-## 3.3 UX/UI 设计
-
-- [ ] 信息架构（页面层级、导航结构）
-- [ ] 关键页面交互稿（文本描述 / 线框图）
-  - [ ] Admin Dashboard
-  - [ ] KB Management
-  - [ ] Intent Configuration
-  - [ ] Frontend Integration
-  - [ ] Analytics
-- 产出：`architecture/ui-wireframes.md`
-
-## 3.4 算法系统架构
-
-- [ ] 文档解析流水线（PDF/DOCX → Chunks → Embeddings → FAISS）
-- [ ] 向量检索策略（相似度阈值、Top-K）
-- [ ] 意图分类方案（Prompt 设计 + 置信度计算）
-- [ ] RAG 响应生成链路
-- 产出：`architecture/algorithm-arch.md`
+**Prerequisites**: All FR/NFR in `prd/STATUS.md` completed and open questions resolved.
 
 ---
 
-## 阻塞项 / 待确认问题
+## 3.1 High-Level Design (HLD)
 
-> ✅ **[已确认]** 前端框架：**Next.js (React)** + Tailwind CSS（2026-02-21）
-> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
+- [x] Tech stack confirmation
+  - [x] Frontend framework: **Streamlit (Python)** (Option A recommended stack; faster to build for MVP within 7 days)
+  - [x] Backend: FastAPI (Python)
+  - [x] Document parsing: LangChain Document Loaders (PyPDFLoader + Docx2txtLoader)
+  - [x] Vector store: FAISS (local persistence)
+  - [x] Relational store: SQLite
+  - [x] LLM: **OpenAI API** (gpt-3.5-turbo for intent classification + response generation, text-embedding-3-small for vectorization)
+- [x] System boundaries & module breakdown
+- [x] Critical path design (end-to-end query processing flow)
+- [x] Risk & rollback strategy
+- Output: `architecture/HLD.md` ✅
 
-> ✅ **[已确认]** 部署方式：**Docker Compose 本地 Demo**（2026-02-21）
-> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
+## 3.2 Low-Level Design (LLD)
 
-> ✅ **[已确认]** LLM 选型：**OpenAI API**（gpt-3.5-turbo + text-embedding-3-small）（2026-02-21）
-> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
+- [x] Module breakdown (package structure under `backend/`)
+- [x] REST API Contract definition
+  - [x] Document management API (upload/list/delete/reparse)
+  - [x] Intent space management API (CRUD)
+  - [x] Query API (submit query → return classification + response)
+  - [x] Analytics API (query history, KB usage stats)
+  - [x] Frontend integration management API (config / connection test)
+- [x] Data model / ERD (SQLite Schema)
+- [x] Exception handling & degradation strategy
+- Output: `architecture/LLD.md` ✅, `architecture/api-contract.md` ✅, `architecture/data-model.md` ✅
+
+## 3.3 UX/UI Design
+
+- [x] Information architecture (page hierarchy, navigation structure)
+- [x] Key page interaction specs (text descriptions / wireframes)
+  - [x] Admin Dashboard
+  - [x] KB Management
+  - [x] Intent Configuration
+  - [x] Frontend Integration
+  - [x] Analytics
+- Output: `architecture/ui-wireframes.md` ✅
+
+## 3.4 Algorithm Architecture
+
+- [x] Document parsing pipeline (PDF/DOCX → Chunks → Embeddings → FAISS)
+- [x] Vector retrieval strategy (similarity threshold, Top-K)
+- [x] Intent classification approach (prompt design + confidence calculation)
+- [x] RAG response generation pipeline
+- Output: `architecture/algorithm-arch.md` ✅
 
 ---
 
-## 完成记录
+## Blockers / Open Questions
 
-| 时间 | 完成事项 | Memory 链接 |
-|------|---------|------------|
-| 2026-02-21 | 架构阶段框架搭建 | [memory/2026-02-21.md](../memory/2026-02-21.md) |
+> ✅ **[Confirmed]** Frontend framework: **Streamlit (Python)** — Option A recommended stack (2026-02-21, revised)
+> See: [memory/2026-02-21.md](../memory/2026-02-21.md)
+
+> ✅ **[Confirmed]** Deployment: **Local Docker Compose Demo** (2026-02-21)
+> See: [memory/2026-02-21.md](../memory/2026-02-21.md)
+
+> ✅ **[Confirmed]** LLM: **OpenAI API** (gpt-3.5-turbo + text-embedding-3-small) (2026-02-21)
+> See: [memory/2026-02-21.md](../memory/2026-02-21.md)
+
+---
+
+## Completion Log
+
+| Time | Completed | Memory Link |
+|------|-----------|-------------|
+| 2026-02-21 | Architecture phase scaffolding | [memory/2026-02-21.md](../memory/2026-02-21.md) |

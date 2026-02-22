@@ -1,94 +1,94 @@
-# Backend 阶段状态
+# Backend Phase Status
 
-> 对应开发流程：Phase 5.2 后端研发（Backend）+ Phase 5.4 算法开发
+> Corresponds to development process: Phase 5.2 — Backend Development + Phase 5.4 — Algorithm Development
 
-**阶段目标**：实现 IntelliKnow KMS 核心后端服务，包括文档解析、向量检索、意图分类和前端集成。
+**Phase Goal**: Implement IntelliKnow KMS core backend services, including document parsing, vector retrieval, intent classification, and frontend integration.
 
-**前置条件**：`architecture/STATUS.md` 中 LLD、API Contract 和数据模型已完成。
-
----
-
-## 5.2.0 项目初始化
-
-- [ ] Python 项目结构搭建（FastAPI）
-- [ ] 依赖管理（`requirements.txt` / `pyproject.toml`）
-- [ ] 环境变量配置（`.env.example`）
-- [ ] SQLite 数据库初始化脚本
-
-## 5.2.1 数据库层
-
-- [ ] SQLite Schema 实现（文档表、意图空间表、查询日志表、集成配置表）
-- [ ] ORM/查询封装（SQLAlchemy 或原生 SQLite）
-- [ ] 数据库迁移脚本
-
-## 5.2.2 文档管理模块
-
-- [ ] 文件上传 API（`POST /api/documents`）
-- [ ] PDF 解析（LangChain PDFLoader / pypdf）
-- [ ] DOCX 解析（LangChain Docx2txtLoader）
-- [ ] 文本分块策略（RecursiveCharacterTextSplitter）
-- [ ] 向量化（OpenAI `text-embedding-3-small`）
-- [ ] FAISS 索引构建与持久化
-- [ ] 文档列表 API（`GET /api/documents`）
-- [ ] 文档删除 API（`DELETE /api/documents/{id}`）
-- [ ] 文档重新解析 API（`POST /api/documents/{id}/reparse`）
-
-## 5.2.3 意图空间管理模块
-
-- [ ] 意图空间 CRUD API（`/api/intents`）
-- [ ] 默认意图空间初始化（HR / Legal / Finance）
-- [ ] 意图空间与文档关联逻辑
-
-## 5.2.4 查询编排器（Orchestrator）
-
-- [ ] 查询入口 API（`POST /api/query`）
-- [ ] 意图分类逻辑（LLM zero-shot 分类，置信度 ≥70%）
-- [ ] 兜底路由（General 空间）
-- [ ] RAG 检索（FAISS 向量检索 + 上下文窗口组装）
-- [ ] LLM 响应生成（带引用的简洁回答）
-- [ ] 响应格式适配（Telegram vs Teams 格式差异）
-
-## 5.2.5 前端集成模块
-
-- [ ] Telegram Bot 集成
-  - [ ] Webhook 设置
-  - [ ] 消息接收与回复
-  - [ ] 连接测试 API
-- [ ] Microsoft Teams Bot 集成（Bot Framework SDK + Azure Bot 注册）
-- [ ] 集成配置管理 API（`/api/integrations`）
-- [ ] API Key 安全存储（环境变量 / 加密存储）
-
-## 5.2.6 分析模块
-
-- [ ] 查询日志记录（每次查询自动写入）
-- [ ] 查询历史查询 API（`GET /api/analytics/queries`）
-- [ ] KB 使用统计 API（`GET /api/analytics/kb-usage`）
-- [ ] 数据导出 API（`GET /api/analytics/export`）
-
-## 5.2.7 可观测性
-
-- [ ] 请求日志中间件
-- [ ] 错误日志（文档解析失败、LLM 调用失败）
-- [ ] 健康检查端点（`GET /api/health`）
-
-## 5.3 测试
-
-- [ ] 单元测试（文档解析、意图分类逻辑）
-- [ ] API 集成测试
-- [ ] 向量检索准确性基础验证
+**Prerequisites**: LLD, API Contract, and data model in `architecture/STATUS.md` must be complete.
 
 ---
 
-## 阻塞项 / 待确认问题
+## 5.2.0 Project Initialization
 
-> ✅ 第二个前端集成已确认：Microsoft Teams（2026-02-21）
-> ✅ LLM 选型已确认：OpenAI API（gpt-3.5-turbo + text-embedding-3-small）（2026-02-21）
-> 参见：[memory/2026-02-21.md](../memory/2026-02-21.md)
+- [ ] Python project structure setup (FastAPI)
+- [ ] Dependency management (`requirements.txt` / `pyproject.toml`)
+- [ ] Environment variable configuration (`.env.example`)
+- [ ] SQLite database initialization script
+
+## 5.2.1 Database Layer
+
+- [ ] SQLite Schema implementation (documents, intent spaces, query logs, integration config tables)
+- [ ] ORM/query wrapper (SQLAlchemy or raw SQLite)
+- [ ] Database migration scripts
+
+## 5.2.2 Document Management Module
+
+- [ ] File upload API (`POST /api/documents`)
+- [ ] PDF parsing (LangChain PDFLoader / pypdf)
+- [ ] DOCX parsing (LangChain Docx2txtLoader)
+- [ ] Text chunking strategy (RecursiveCharacterTextSplitter)
+- [ ] Vectorization (OpenAI `text-embedding-3-small`)
+- [ ] FAISS index construction & persistence
+- [ ] Document list API (`GET /api/documents`)
+- [ ] Document delete API (`DELETE /api/documents/{id}`)
+- [ ] Document re-parse API (`POST /api/documents/{id}/reparse`)
+
+## 5.2.3 Intent Space Management Module
+
+- [ ] Intent space CRUD API (`/api/intents`)
+- [ ] Default intent space initialization (HR / Legal / Finance)
+- [ ] Intent space ↔ document association logic
+
+## 5.2.4 Query Orchestrator
+
+- [ ] Query entry API (`POST /api/query`)
+- [ ] Intent classification logic (LLM zero-shot, confidence ≥ 70%)
+- [ ] Fallback routing (General space)
+- [ ] RAG retrieval (FAISS vector search + context window assembly)
+- [ ] LLM response generation (concise answer with citations)
+- [ ] Response format adaptation (Telegram vs Teams format differences)
+
+## 5.2.5 Frontend Integration Module
+
+- [ ] Telegram Bot integration
+  - [ ] Webhook/Polling setup
+  - [ ] Message receive & reply
+  - [ ] Connection test API
+- [ ] Microsoft Teams Bot integration (Bot Framework SDK + Azure Bot registration)
+- [ ] Integration config management API (`/api/integrations`)
+- [ ] API Key secure storage (env vars / encrypted storage)
+
+## 5.2.6 Analytics Module
+
+- [ ] Query log recording (auto-write on each query)
+- [ ] Query history API (`GET /api/analytics/queries`)
+- [ ] KB usage stats API (`GET /api/analytics/kb-usage`)
+- [ ] Data export API (`GET /api/analytics/export`)
+
+## 5.2.7 Observability
+
+- [ ] Request logging middleware
+- [ ] Error logging (document parsing failures, LLM call failures)
+- [ ] Health check endpoint (`GET /api/health`)
+
+## 5.3 Testing
+
+- [ ] Unit tests (document parsing, intent classification logic)
+- [ ] API integration tests
+- [ ] Vector retrieval accuracy baseline validation
 
 ---
 
-## 完成记录
+## Blockers / Open Questions
 
-| 时间 | 完成事项 | Memory 链接 |
-|------|---------|------------|
-| 2026-02-21 | 后端阶段框架搭建 | [memory/2026-02-21.md](../memory/2026-02-21.md) |
+> ✅ Second frontend integration confirmed: Microsoft Teams (2026-02-21)
+> ✅ LLM confirmed: OpenAI API (gpt-3.5-turbo + text-embedding-3-small) (2026-02-21)
+> See: [memory/2026-02-21.md](../memory/2026-02-21.md)
+
+---
+
+## Completion Log
+
+| Time | Completed | Memory Link |
+|------|-----------|-------------|
+| 2026-02-21 | Backend phase scaffolding | [memory/2026-02-21.md](../memory/2026-02-21.md) |

@@ -1,78 +1,81 @@
-# Frontend 阶段状态
+# Frontend Phase Status
 
-> 对应开发流程：Phase 5.1 前端研发（Frontend）
+> Corresponds to development process: Phase 5.1 — Frontend Development (Admin UI)
+>
+> **Tech stack: Streamlit (Python)** — Option A recommended stack from requirements doc.
+> Streamlit runs as a Python app, same language as the backend. Much faster to build for 7-day MVP.
 
-**阶段目标**：实现 IntelliKnow KMS Admin Dashboard（5个核心页面），对接后端 REST API。
+**Phase Goal**: Implement IntelliKnow KMS Admin Dashboard (5 core pages) using Streamlit, calling the FastAPI backend via HTTP.
 
-**前置条件**：`architecture/STATUS.md` 中 API Contract 和 UI 线框图已完成。
-
----
-
-## 5.1 项目初始化
-
-- [x] 技术栈确认：**Next.js (React) + Tailwind CSS**
-- [ ] 项目脚手架搭建
-- [ ] 路由结构设计
-- [ ] 通用组件库 / UI 框架选择（Tailwind CSS、shadcn/ui 等）
-- [ ] API 客户端封装（统一请求层）
-
-## 5.2 Admin Dashboard 页面
-
-### Dashboard 主页
-- [ ] 4个功能模块卡片（Frontend Integration / KB Management / Intent Config / Analytics）
-- [ ] 状态概览（已连接集成数、文档总数、今日查询数）
-- [ ] 导航栏（顶部或侧边）
-
-### KB Management 页面
-- [ ] 文档列表（名称 / 上传时间 / 格式 / 大小 / 状态 / 操作）
-- [ ] 拖拽上传区（支持 PDF/DOCX，带进度指示器）
-- [ ] 搜索栏（按名称/关键词）
-- [ ] 格式/日期/意图空间筛选器
-- [ ] 文档删除 / 重新解析操作
-
-### Intent Configuration 页面
-- [ ] 意图空间卡片列表（名称 / 描述 / 关联文档数 / 分类准确率）
-- [ ] 查询分类日志表格（查询内容 / 意图 / 置信度 / 响应状态）
-- [ ] 意图空间创建/编辑表单
-
-### Frontend Integration 页面
-- [ ] 集成状态卡片（每个工具：Connected/Disconnected 状态指示）
-- [ ] 配置详情（API Key 末4位、Webhook URL 等）
-- [ ] 测试按钮（发送示例查询验证集成）
-- [ ] 配置编辑表单
-
-### Analytics 页面
-- [ ] 查询历史表格（时间戳 / 意图 / 置信度 / 响应状态）
-- [ ] KB 使用统计（最常访问文档、各意图空间查询量）
-- [ ] 数据导出按钮
-
-## 5.3 状态管理
-
-- [ ] 全局状态管理（React Context 或 Zustand）
-- [ ] API 数据缓存策略
-- [ ] 加载/错误状态处理
-
-## 5.4 测试
-
-- [ ] 组件单元测试（关键组件）
-- [ ] 页面集成测试
-
-## 5.5 性能与兼容性
-
-- [ ] 响应式设计（桌面优先，可选移动端）
-- [ ] 加载性能优化
+**Prerequisites**: API Contract in `architecture/STATUS.md` must be complete.
 
 ---
 
-## 阻塞项 / 待确认问题
+## 5.1 Project Initialization
 
-> ✅ 前端框架已确认：Next.js (React)（2026-02-21）
-> ❗ **[阻塞]** 等待 architecture 阶段完成 API Contract
+- [x] Tech stack confirmed: **Streamlit (Python)**
+- [ ] Project scaffolding (Streamlit app structure)
+- [ ] Requirements file (`requirements.txt` with streamlit, requests, etc.)
+- [ ] FastAPI HTTP client wrapper (`utils/api_client.py`)
+- [ ] Shared layout / navigation sidebar
+
+## 5.2 Admin Dashboard Pages
+
+### Dashboard Home (`pages/1_Dashboard.py`)
+- [ ] 4 feature module metric cards (Frontend Integration / KB Management / Intent Config / Analytics)
+- [ ] Key stats (connected integrations count, total documents, today's queries)
+- [ ] Navigation via Streamlit sidebar
+
+### KB Management Page (`pages/2_KB_Management.py`)
+- [ ] Document list table (name / upload date / format / size / intent space / status / actions)
+- [ ] File uploader widget (PDF/DOCX, with intent space selector)
+- [ ] Upload progress indicator (st.progress / st.spinner)
+- [ ] Search bar (by name/keyword)
+- [ ] Intent space filter dropdown
+- [ ] Delete document button (with confirmation)
+
+### Intent Configuration Page (`pages/3_Intent_Config.py`)
+- [ ] Intent space cards (name / description / associated doc count / classification accuracy)
+- [ ] Create / edit intent space form
+- [ ] Delete intent space (disabled when documents are associated)
+- [ ] Query classification log table (query / intent / confidence / response status)
+
+### Frontend Integration Page (`pages/4_Integrations.py`)
+- [ ] Integration status cards (Telegram / Teams: Connected/Disconnected/Error)
+- [ ] Config form (API Key / Token input — masked)
+- [ ] Test button (send sample query, show result)
+- [ ] Last 4 digits display of configured keys
+
+### Analytics Page (`pages/5_Analytics.py`)
+- [ ] Query history table (timestamp / intent / confidence / response status / source docs)
+- [ ] KB usage stats (most accessed documents Top 10)
+- [ ] Query volume per intent space
+- [ ] Date range filter
+- [ ] Export CSV button (st.download_button)
+
+## 5.3 State Management
+
+- [ ] Streamlit session_state for form data and API responses
+- [ ] Loading spinners (st.spinner) for API calls
+- [ ] Error display (st.error) and success feedback (st.success)
+
+## 5.4 Styling
+
+- [ ] Custom CSS via `st.markdown` for card styling
+- [ ] Status badge colors (green/gray/red)
+- [ ] Consistent layout across all pages
 
 ---
 
-## 完成记录
+## Blockers / Open Questions
 
-| 时间 | 完成事项 | Memory 链接 |
-|------|---------|------------|
-| 2026-02-21 | 前端阶段框架搭建 | [memory/2026-02-21.md](../memory/2026-02-21.md) |
+> ✅ Frontend framework confirmed: Streamlit (Python) — Option A recommended stack (2026-02-21)
+> ❗ **[Blocked]** Waiting for architecture phase to complete API Contract
+
+---
+
+## Completion Log
+
+| Time | Completed | Memory Link |
+|------|-----------|-------------|
+| 2026-02-21 | Frontend phase scaffolding (Streamlit, revised from Next.js) | [memory/2026-02-21.md](../memory/2026-02-21.md) |

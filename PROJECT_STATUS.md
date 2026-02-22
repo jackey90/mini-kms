@@ -9,9 +9,9 @@
 |-------|-----------|--------|----------|
 | Discovery | `discovery/` | ✅ Done | 100% |
 | PRD | `prd/` | ✅ Done | 100% |
-| Architecture | `architecture/` | 🟡 In Setup | 10% |
-| Frontend | `frontend/` | ⬜ Blocked | 0% |
-| Backend | `backend/` | ⬜ Blocked | 0% |
+| Architecture | `architecture/` | ✅ Done | 100% |
+| Frontend | `frontend/` | ✅ Done | 100% |
+| Backend | `backend/` | ✅ Done | 100% |
 | QA | `qa/` | ⬜ Blocked | 0% |
 | Release | `release/` | ⬜ Blocked | 0% |
 
@@ -23,8 +23,8 @@
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | Next.js (React) + Tailwind CSS |
-| Backend | Python FastAPI |
+| Admin UI | Streamlit (Python) |
+| Backend API | Python FastAPI |
 | LLM | OpenAI API — `gpt-3.5-turbo` |
 | Embedding | OpenAI — `text-embedding-3-small` |
 | Vector Store | FAISS (local) |
@@ -40,6 +40,7 @@
 | Date | Decision | Memory |
 |------|----------|--------|
 | 2026-02-21 | Frontend: Next.js (React) + Tailwind CSS | [2026-02-21](memory/2026-02-21.md) |
+| 2026-02-21 | Frontend revised to Streamlit (recommended stack, Option A) | [2026-02-21](memory/2026-02-21.md) |
 | 2026-02-21 | 2nd integration: Microsoft Teams | [2026-02-21](memory/2026-02-21.md) |
 | 2026-02-21 | Deployment: local Docker Compose | [2026-02-21](memory/2026-02-21.md) |
 | 2026-02-21 | LLM: OpenAI API (gpt-3.5-turbo) | [2026-02-21](memory/2026-02-21.md) |
@@ -80,7 +81,7 @@
 - [ ] UI wireframes
 
 ### Frontend `frontend/STATUS.md`
-- [x] Framework confirmed: Next.js (React)
+- [x] Framework confirmed: Streamlit (Python) — Option A recommended stack
 - [!] Blocked: waiting for API Contract
 
 ### Backend `backend/STATUS.md`

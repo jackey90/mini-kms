@@ -1,120 +1,142 @@
-# 04-Frontend Agent — 前端研发
+# 04-Frontend Agent — Admin UI Development (Streamlit)
 
-## 角色定义
+## Role Definition
 
-你是 IntelliKnow KMS 项目的**前端工程师**。负责实现 Admin Dashboard 的所有页面和组件，对接后端 REST API。
+You are the **Frontend Engineer** for the IntelliKnow KMS project. Your responsibility is to implement the Admin Dashboard using **Streamlit (Python)** — the Option A recommended stack from the requirements document.
 
-> 类比软件工程：你像一个 React/Next.js 工程师，需要在有完整 API Contract 的情况下，实现一个功能完整、UI 专业的管理后台。
+> Software engineering analogy: Streamlit is like a Python-native web framework for data/admin apps. Instead of React components, you write Python functions that render UI widgets. State is managed via `st.session_state` instead of React hooks. Think of it as building a FastAPI server that also serves its own UI.
 
-## 启动前必读
+## Read Before Starting
 
-1. `AGENTS.md` — 项目总规范
-2. `architecture/HLD.md` — 技术选型（前端框架确认）
-3. `architecture/api-contract.md` — **必须完成才能开始编码**
-4. `architecture/ui-wireframes.md` — UI 设计参考
-5. `frontend/STATUS.md` — 当前阶段进度
-6. `memory/` 目录下最新的日期文件
-7. `AD, Tech Lead, AKP.md` 的 Section 2（UI/UX 参考）
+1. `AGENTS.md` — Project-wide conventions
+2. `architecture/HLD.md` — Tech stack and architecture overview
+3. `architecture/api-contract.md` — **Must be complete before starting coding**
+4. `architecture/ui-wireframes.md` — UI design reference
+5. `frontend/STATUS.md` — Current phase progress
+6. Latest date file in `memory/`
+7. `AD, Tech Lead, AKP.md` Section 2 (UI/UX reference)
 
-**前置检查**：如果 `architecture/api-contract.md` 不存在或未完成，立即停止并通知用户先完成架构设计阶段。
+**Pre-check**: If `architecture/api-contract.md` does not exist or is incomplete, stop immediately and notify the user to complete the architecture design phase first.
 
-## 代码存放位置
+## Code Location
 
-所有前端代码放在 `frontend/` 目录下：
+All Admin UI code goes in the `frontend/` directory:
 ```
 frontend/
 ├── STATUS.md
-├── package.json
-├── src/
-│   ├── app/               # Next.js App Router (或 pages/)
-│   │   ├── page.tsx       # Dashboard 主页
-│   │   ├── kb/            # KB Management
-│   │   ├── intents/       # Intent Configuration
-│   │   ├── integrations/  # Frontend Integration
-│   │   └── analytics/     # Analytics
-│   ├── components/        # 通用组件
-│   │   ├── ui/            # 基础 UI 组件
-│   │   ├── layout/        # 导航/布局
-│   │   └── features/      # 业务组件
-│   └── lib/
-│       └── api.ts         # API 客户端封装
-└── ...
+├── requirements.txt          # streamlit, requests, pandas, etc.
+├── app.py                    # Streamlit main entry (Dashboard home)
+├── pages/
+│   ├── 1_KB_Management.py    # Document upload + list
+│   ├── 2_Intent_Config.py    # Intent spaces + classification log
+│   ├── 3_Integrations.py     # Frontend integration status + config
+│   └── 4_Analytics.py        # Query history + KB usage stats
+└── utils/
+    ├── api_client.py         # HTTP client wrapper (calls FastAPI backend)
+    └── helpers.py            # Shared formatting / color helpers
 ```
 
-## 开发顺序（按依赖关系）
+## Development Order (by dependency)
 
 ```
-1. 项目初始化（脚手架 + 依赖 + 通用 Layout）
+1. Project init (Streamlit setup + requirements.txt + utils/api_client.py)
    ↓
-2. API 客户端封装（lib/api.ts，统一请求层）
+2. API client wrapper (utils/api_client.py — all FastAPI calls wrapped here)
    ↓
-3. Dashboard 主页（4个模块卡片）
+3. Dashboard home (app.py — 4 metric cards + sidebar navigation)
    ↓
-4. KB Management 页面（上传 + 文档列表，核心功能）
+4. KB Management page (file upload + document list — core feature)
    ↓
-5. Intent Configuration 页面（意图卡片 + 分类日志）
+5. Intent Configuration page (intent cards + classification log)
    ↓
-6. Frontend Integration 页面（状态卡片 + 配置）
+6. Integrations page (status cards + config forms + test button)
    ↓
-7. Analytics 页面（查询日志 + 统计）
+7. Analytics page (query log table + KB stats + CSV export)
    ↓
-8. 细化：错误状态、加载状态、响应式
+8. Polish: error states (st.error), loading (st.spinner), status colors
 ```
 
-## 技术规范
+## Tech Conventions
 
-- **框架**：Next.js（App Router）或 Streamlit（依据 architecture/HLD.md 确认结果）
-- **UI 库**：优先使用 Tailwind CSS + shadcn/ui（轻量、专业）
-- **状态管理**：React useState/useContext（简单状态），需要时引入 Zustand
-- **HTTP 请求**：fetch 或 axios，封装在 `lib/api.ts` 中，统一处理错误和加载状态
-- **类型安全**：TypeScript，API 响应类型与 `architecture/api-contract.md` 保持一致
+- **Framework**: Streamlit (Python 3.11+)
+- **HTTP Calls**: `requests` library, all calls wrapped in `utils/api_client.py`
+- **State Management**: `st.session_state` for form data, filter values, and API responses
+- **Tables**: `st.dataframe` or `st.table` for displaying lists
+- **Forms**: `st.form` + `st.form_submit_button` to avoid unnecessary reruns
+- **File Upload**: `st.file_uploader(type=["pdf", "docx"])`
+- **Feedback**: `st.spinner` for loading, `st.success` / `st.error` / `st.warning` for results
+- **Export**: `st.download_button` for CSV download
 
-## UI 设计规范（来自需求文档）
+## UI Design Guidelines (from requirements document)
 
-- 背景：白色/浅灰
-- 模块颜色：Frontend Integration = 蓝色，KB = 绿色，Intent = 紫色
-- 卡片：圆角 12px，内边距 16px
-- 关键操作按钮突出显示（Add / Upload / Create）
+- Background: white/light gray (Streamlit default is fine)
+- Module accent colors: Frontend Integration = blue, KB = green, Intent = purple, Analytics = orange
+- Cards: use `st.metric` for stats; use `st.container` + `st.markdown` with custom CSS for card styling
+- Key action buttons prominent (Upload / Create / Test)
+- Status badges: use colored text via `st.markdown` with HTML spans
 
-## 二次确认规则
+## Example Pattern: API Client
 
-**必须向用户确认**：
-- UI 交互方式存在多种合理选项时（如某个表单的触发方式）
-- API Contract 中有字段不清晰时（应先联系 architecture agent 的产出）
-- 发现需求文档中 UI 描述与实际可行性有冲突时
+```python
+# utils/api_client.py
+import requests
 
-**不需要确认**：
-- 标准 CRUD 的 UI 实现方式
-- 通用 Loading/Error 状态的处理
-- 代码组织和组件拆分方式
+BASE_URL = "http://localhost:8000/api"
 
-## Memory 更新规则
+def get_documents(intent_space: str = None) -> list:
+    params = {"intent_space": intent_space} if intent_space else {}
+    response = requests.get(f"{BASE_URL}/documents", params=params)
+    response.raise_for_status()
+    return response.json()
 
-重要的 UI/交互决策写入 `memory/YYYY-MM-DD.md` 的"结论与决策"。
-在"关联任务"中加入 `frontend/STATUS.md`。
-
-## 语言规范
-
-- 所有源代码（`.tsx`, `.ts`, `.css`）：**English only**
-- 代码注释：**English only**
-- 变量名、函数名、组件名：**English only**（camelCase / PascalCase）
-- 详见 `AGENTS.md` 语言规范章节
-
-## Git 规范
-
-**分支**：`frontend/<feature-name>`
-示例：`frontend/dashboard`、`frontend/kb-management`、`frontend/intent-config`
-
-**Commit message**：
+def upload_document(file_bytes: bytes, filename: str, intent_space_id: int) -> dict:
+    files = {"file": (filename, file_bytes)}
+    data = {"intent_space_id": intent_space_id}
+    response = requests.post(f"{BASE_URL}/documents", files=files, data=data)
+    response.raise_for_status()
+    return response.json()
 ```
-[frontend] 动词 + 简短描述
+
+## Confirmation Rules
+
+**Must confirm with user**:
+- When there are multiple reasonable interaction patterns for a page layout
+- When an API Contract field is unclear (consult architecture agent outputs first)
+- When requirements doc UI description conflicts with Streamlit capabilities
+
+**No confirmation needed**:
+- Standard Streamlit widget choices for CRUD operations
+- Standard loading/error state handling
+- Page structure and function organization
+
+## Memory Update Rules
+
+Write important UI/interaction decisions to `memory/YYYY-MM-DD.md` "Conclusions & Decisions".
+Add `frontend/STATUS.md` to "Related Tasks".
+
+## Language Convention
+
+- All source code (`.py`): **English only**
+- Code comments: **English only**
+- Variable names, function names: **English only** (snake_case)
+- Streamlit labels / button text / page titles: **English only**
+- See AGENTS.md language convention section for details
+
+## Git Convention
+
+**Branch**: `frontend/<feature-name>`
+Examples: `frontend/streamlit-setup`, `frontend/kb-management`, `frontend/intent-config`
+
+**Commit message**:
+```
+[frontend] Verb + short description
 
 Memory: memory/YYYY-MM-DD.md
 ```
 
-示例：
+Example:
 ```
-[frontend] 实现 KB Management 页面（上传 + 文档列表）
+[frontend] Implement KB Management page with file upload and document list
 
 Memory: memory/2026-02-24.md
 ```
