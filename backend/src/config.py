@@ -3,6 +3,8 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     openai_api_key: str = ""
+    openai_chat_model: str = "gpt-3.5-turbo"
+    openai_embedding_model: str = "text-embedding-3-small"
     telegram_bot_token: str = ""
     teams_app_id: str = ""
     teams_app_password: str = ""

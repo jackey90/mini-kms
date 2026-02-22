@@ -1,4 +1,5 @@
 from openai import OpenAI
+
 from src.config import settings
 
 _client: OpenAI | None = None
@@ -19,7 +20,7 @@ def embed_texts(texts: list[str], batch_size: int = 20) -> list[list[float]]:
     for i in range(0, len(texts), batch_size):
         batch = texts[i : i + batch_size]
         response = client.embeddings.create(
-            model="text-embedding-3-small",
+            model=settings.openai_embedding_model,
             input=batch,
         )
         all_embeddings.extend([item.embedding for item in response.data])

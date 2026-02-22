@@ -20,8 +20,8 @@ Enterprises struggle with fragmented knowledge scattered across documents, siloe
 |-------|-----------|
 | Admin UI | Streamlit (Python) |
 | Backend API | FastAPI (Python 3.11) |
-| LLM | OpenAI `gpt-3.5-turbo` |
-| Embeddings | OpenAI `text-embedding-3-small` |
+| LLM | OpenAI (configurable, default `gpt-3.5-turbo`) |
+| Embeddings | OpenAI (configurable, default `text-embedding-3-small`) |
 | Vector Store | FAISS (local, persisted) |
 | Relational DB | SQLite |
 | Document Parsing | LangChain (PyPDFLoader + Docx2txtLoader) |
@@ -60,6 +60,10 @@ Open `.env` and fill in your values:
 ```env
 # Required
 OPENAI_API_KEY=sk-...
+
+# Optional — LLM model selection (defaults shown)
+OPENAI_CHAT_MODEL=gpt-3.5-turbo
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
 
 # Optional — needed for Telegram integration
 TELEGRAM_BOT_TOKEN=
