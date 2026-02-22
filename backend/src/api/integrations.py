@@ -93,6 +93,9 @@ async def teams_webhook(request: Request, db: Session = Depends(get_db)):
     body = await request.json()
     activity = Activity().deserialize(body)
 
+    if activity.service_url and "://localhost" in activity.service_url:
+        activity.service_url = activity.service_url.replace("://localhost", "://host.docker.internal")
+
     async def turn_handler(turn_context):
         query = turn_context.activity.text or ""
         if query.strip():

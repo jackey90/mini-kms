@@ -49,6 +49,21 @@ def build_telegram_app() -> Application | None:
     return app
 
 
+async def _start_polling(app: Application) -> None:
+    """Low-level polling loop that avoids signal handler registration."""
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling(drop_pending_updates=True)
+    logger.info("Telegram bot is now polling for updates")
+
+    stop_event = asyncio.Event()
+    await stop_event.wait()  # block forever (daemon thread exits with process)
+
+    await app.updater.stop()
+    await app.stop()
+    await app.shutdown()
+
+
 def run_polling() -> None:
     """Run Telegram bot in polling mode (blocking). Called in a background thread."""
     loop = asyncio.new_event_loop()
@@ -56,4 +71,4 @@ def run_polling() -> None:
     app = build_telegram_app()
     if app:
         logger.info("Starting Telegram bot in polling mode...")
-        app.run_polling(drop_pending_updates=True)
+        loop.run_until_complete(_start_polling(app))
