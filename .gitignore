@@ -3,6 +3,8 @@
 
 # Runtime data
 data/intelliknow.db
+data/intelliknow.db-shm
+data/intelliknow.db-wal
 data/faiss/
 data/uploads/
 
