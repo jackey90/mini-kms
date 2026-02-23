@@ -93,20 +93,49 @@ You should see the Dashboard with all metrics showing. The three default intent 
 
 ### Step 5 — Upload sample documents
 
+Three sample documents are included in `data/uploads/` — ready to use immediately:
+
+| File | Intent Space | Format |
+|------|-------------|--------|
+| `1_hr_employee_handbook.pdf` | HR | PDF |
+| `2_legal_data_privacy_policy.docx` | Legal | DOCX |
+| `3_finance_q4_2025_report.pdf` | Finance | PDF |
+
+To upload them:
+
 1. Click **📂 KB Management** in the sidebar
-2. Select a PDF or DOCX file (max 50MB)
-3. Choose an intent space (e.g. HR)
+2. Select one of the sample files above (or any PDF/DOCX, max 50MB)
+3. Choose the matching intent space (HR / Legal / Finance)
 4. Click **Upload & Parse**
 
 The system will parse, chunk, embed, and index the document automatically. Status will show ✅ Processed when done.
 
 ### Step 6 — Send your first query
 
+The `user_id` field scopes query history per user. Use any string identifier (e.g. email, username, or `"demo"`).
+
+**HR — annual leave policy (from `1_hr_employee_handbook.pdf`)**
 ```bash
 curl -X POST http://localhost:8000/api/query \
   -H "Content-Type: application/json" \
-  -d '{"query": "What is the annual leave policy?", "channel": "api"}'
+  -d '{"query": "What is the annual leave policy?", "channel": "api", "user_id": "demo"}'
 ```
+
+**Legal — data privacy rights (from `2_legal_data_privacy_policy.docx`)**
+```bash
+curl -X POST http://localhost:8000/api/query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What personal data does the company collect and how is it used?", "channel": "api", "user_id": "demo"}'
+```
+
+**Finance — Q4 2025 performance (from `3_finance_q4_2025_report.pdf`)**
+```bash
+curl -X POST http://localhost:8000/api/query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What was the revenue growth in Q4 2025?", "channel": "api", "user_id": "demo"}'
+```
+
+Each response includes `detected_intent`, `confidence`, `answer`, and `source_documents`.
 
 Or use the interactive API docs at **http://localhost:8000/docs**.
 
@@ -227,16 +256,16 @@ Key endpoints:
 Follow these steps to verify the complete system works:
 
 1. **Upload a document**
-   - Admin UI → KB Management → upload a PDF → select "HR" intent space → Upload & Parse
+   - Admin UI → KB Management → upload `1_hr_employee_handbook.pdf` → select "HR" intent space → Upload & Parse
    - Verify status shows ✅ Processed
 
 2. **Query via API**
    ```bash
    curl -X POST http://localhost:8000/api/query \
      -H "Content-Type: application/json" \
-     -d '{"query": "What is the annual leave policy?", "channel": "api"}'
+     -d '{"query": "What is the annual leave policy?", "channel": "api", "user_id": "demo"}'
    ```
-   Expected: response with `detected_intent: "HR"`, `source_documents: ["your-file.pdf"]`
+   Expected: response with `detected_intent: "HR"`, `source_documents: ["1_hr_employee_handbook.pdf"]`
 
 3. **Query via Telegram** (requires bot token configured)
    - Send _"What is the annual leave policy?"_ to your bot
