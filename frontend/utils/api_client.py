@@ -78,8 +78,11 @@ def delete_intent(space_id: int) -> dict:
 
 # --- Query ---
 
-def submit_query(query: str, channel: str = "api") -> dict:
-    return _post("/query", {"query": query, "channel": channel})
+def submit_query(query: str, channel: str = "api", user_id: str | None = None) -> dict:
+    payload: dict = {"query": query, "channel": channel}
+    if user_id:
+        payload["user_id"] = user_id
+    return _post("/query", payload)
 
 
 # --- Integrations ---
