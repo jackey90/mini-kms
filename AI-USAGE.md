@@ -1,84 +1,54 @@
 # AI Usage Reflection — IntelliKnow KMS
 
-> This document describes how AI tools were leveraged strategically during development, the intent behind each usage, and adjustments made to AI outputs.
-> Per the project requirements: we document **strategic intent and impact**, not tool names.
+## 1. Document Parsing: AI-Powered Table Extraction
+
+**Challenge**: Standard PDF text extractors (PyPDF, pdfminer) treat embedded tables as flat text, destroying row/column structure. When HR salary grids or financial tables are ingested, the resulting chunks become unsearchable noise — e.g., cell values from different columns merge into the same line.
+
+**How AI Was Used**:
+- **Detection**: `pdfplumber` scans each PDF page for table regions and extracts raw cell data (rows × columns).
+- **Structuring**: The raw cell matrix is sent to OpenAI (GPT-3.5-turbo) with a system prompt that instructs the model to identify header rows, infer column semantics, and output clean Markdown tables with descriptive labels.
+- **Integration**: The structured Markdown tables are appended to the page text before chunking, so the vector store indexes them as searchable, context-preserving content.
+
+**Before / After**:
+| Aspect | Before (pure text) | After (AI-structured) |
+|--------|--------------------|-----------------------|
+| Salary grid query | Returns garbled fragments | Returns the correct salary band with grade/level context |
+| Chunk quality | Numeric values mixed across columns | Each row preserved as a coherent unit |
+| Manual effort | Would need manual CSV conversion | Fully automated at upload time |
+
+**Adjustments Made**: Tuned `temperature=0` for the structuring call to guarantee deterministic, faithful reproduction of numerical values. Added a fallback path so parsing still succeeds (text-only) if table extraction fails.
+
+**Code**: `backend/src/ml/document_parser.py` — `_extract_tables_from_pdf()` + `_structure_tables_with_ai()`
 
 ---
 
-## Scenario 1: Document Parsing — Handling Structured Content in PDFs
+## 2. Frontend Integration: Channel-Aware Response Formatting
 
-### The Challenge
+**Challenge**: Telegram and Microsoft Teams have very different rendering capabilities and constraints. Telegram limits messages to 4,096 characters and supports minimal markdown; Teams renders rich markdown with bold, bullet lists, and tables. Sending the same raw text to both channels leads to a degraded experience on at least one platform.
 
-Enterprise PDF documents often contain more than plain prose. HR salary grids, legal clause tables, and finance expense matrices are structured tabular data embedded within PDFs. Pure text extraction strips the row/column relationships, turning a salary grid like:
+**How AI Was Used**:
+- **Prompt-level adaptation**: Instead of building separate post-processing formatters for each channel, channel-specific formatting instructions are injected into the RAG system prompt. For Telegram, the LLM is told to keep output under 3,500 characters, use plain text with emoji markers, and avoid markdown tables. For Teams, it's instructed to use bullet points, bold headers, and markdown tables for structured data.
+- **Hard-limit enforcement**: A post-processing layer enforces Telegram's 4,096-character hard limit with smart truncation at sentence boundaries, appending a truncation notice if needed.
+- **Teams structure**: Teams responses include a horizontal rule and bold "Sources" section for clean visual separation.
 
-```
-Grade | Base Salary | Bonus %
-L1    | $60,000     | 5%
-L2    | $80,000     | 8%
-```
+**Before / After**:
+| Aspect | Before | After |
+|--------|--------|-------|
+| Telegram long answer | Raw text exceeding 4,096 chars → API error / silent truncation | Smart truncation at sentence boundary + truncation notice |
+| Telegram tables | Broken markdown table rendering | Reformatted as line-by-line text |
+| Teams answer | Plain text, no visual hierarchy | Bullet points, bold headers, markdown tables |
+| Development effort | Would need a custom formatter per channel | Single prompt variation + lightweight post-processing |
 
-into a flat string: `"Grade Base Salary Bonus % L1 $60,000 5% L2..."` — which loses the structure entirely and makes retrieval unreliable.
+**Adjustments Made**: Initially tried pure post-processing (regex-based reformatting), but it was brittle and lost semantic meaning. Shifting the adaptation into the LLM prompt produced naturally formatted output that required minimal post-processing — only the hard character limit needed enforcement.
 
-### How AI Was Used
-
-AI was used at two levels:
-
-**1. Parsing strategy design** — AI was consulted to determine the optimal chunking strategy for mixed-content documents. The key insight was that `RecursiveCharacterTextSplitter` with `chunk_size=500` and `chunk_overlap=50` preserves enough context around table rows to make them semantically searchable, even without explicit table structure parsing. For example, a chunk containing `"Grade L2 Base Salary $80,000 Bonus 8%"` will match a query like "what is the bonus for grade L2" because the embedding captures semantic proximity.
-
-**2. LLM prompt design for grounded responses** — The RAG response generation prompt was designed (with AI assistance) to explicitly instruct the LLM to answer only from provided context and to not hallucinate when structured data is partial. This prevents the model from "interpolating" a salary figure that wasn't in the retrieved chunks.
-
-### Impact
-
-- Structured content in PDFs (tables, bullet lists, numbered policies) became searchable without a dedicated table extraction library, saving ~1 day of custom parsing development
-- The chunk overlap strategy reduced "context boundary" failures by ~40% in manual testing (queries that previously returned no result because the answer spanned a chunk boundary now return correctly)
-- False answer rate from LLM hallucination dropped to near-zero for on-topic queries by grounding the prompt strictly in retrieved context
-
-### Adjustments Made to AI Output
-
-The initial AI-suggested chunk size was 1000 characters, which was too large — it caused FAISS to retrieve chunks containing multiple unrelated policies. Reduced to 500 with empirical testing, which improved precision of retrieved chunks significantly.
+**Code**: `backend/src/ml/rag_engine.py` — `_CHANNEL_FORMAT_INSTRUCTIONS` + `_enforce_telegram_limit()`
 
 ---
 
-## Scenario 2: Frontend Integration — Adapting Responses Across Platforms
+## 3. Other AI-Assisted Development Moments
 
-### The Challenge
-
-Telegram and Microsoft Teams have very different message format constraints:
-- **Telegram**: Plain text only in basic mode; emoji renders well; no rich cards without extra libraries
-- **Teams**: Supports Adaptive Cards with structured layout; plain text also works; markdown renders differently
-
-A single response format would either look broken on one platform or require maintaining two completely separate response pipelines — multiplying integration complexity.
-
-### How AI Was Used
-
-AI was used to design a **single-source response formatting strategy** that adapts at the last step, not throughout the pipeline:
-
-1. The core RAG engine generates a single `answer` string + `source_documents` list — platform-agnostic
-2. A lightweight `_format_for_channel()` function applies channel-specific decoration:
-   - Telegram: appends `📄 Source: filename.pdf`
-   - Teams: appends `Source: filename.pdf` (no emoji, cleaner for enterprise UI)
-   - API: same as Teams (used by Admin UI test queries)
-
-AI helped identify the key insight: **format adaptation should be a thin wrapper, not a deep architectural concern**. This prevented the trap of duplicating query logic for each channel.
-
-### Impact
-
-- Consistent user experience across Telegram and Teams without building custom formatters for each platform
-- New channel support (e.g. WhatsApp) requires only adding one new format case — no changes to the core RAG pipeline
-- Integration development time reduced from an estimated 2 days (separate pipelines) to ~4 hours (single pipeline + format adapter)
-
-### Adjustments Made to AI Output
-
-The initial AI suggestion included channel-specific response truncation (Telegram messages > 4096 chars are rejected). This edge case was added as a safety truncation step: responses over 3000 characters are truncated with a "...see Admin UI for full response" suffix — ensuring the bot never silently fails on very long answers.
-
----
-
-## Overall Reflection
-
-The most valuable AI usage pattern in this project was **using AI as a design accelerator, not a code generator**. Rather than generating boilerplate, AI was most effective when used to:
-
-1. Evaluate architectural trade-offs (e.g. per-space FAISS indexes vs. single index with metadata filtering)
-2. Draft LLM prompts and iterate on them to achieve reliable, grounded outputs
-3. Identify edge cases early (chunk boundary failures, format truncation limits, FAISS index corruption on crash)
-
-In each case, the AI output served as a starting draft that was reviewed, tested, and adjusted — not used verbatim. The adjustment cycle was essential: the AI's first answer was often 80% correct, but the final 20% (tuning chunk size, adding fallback thresholds, handling encrypted PDFs) required domain judgment and empirical testing.
+| Area | How AI Helped |
+|------|---------------|
+| **Intent Classification** | Used GPT-3.5-turbo zero-shot classification with a structured JSON output format. Iterated on the prompt to include intent keywords from admin config, improving classification accuracy for domain-specific queries. |
+| **RAG Prompt Engineering** | Tested multiple system prompt variations to balance conciseness vs. completeness. Added explicit "do not use prior knowledge" guardrail after observing hallucinated answers during early testing. |
+| **Architecture Design** | Leveraged AI to evaluate trade-offs between FAISS (local, zero-cost) vs. hosted vector DBs (Pinecone, Weaviate). Chose FAISS for MVP simplicity and zero external dependency. |
