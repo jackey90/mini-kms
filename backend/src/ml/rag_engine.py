@@ -43,27 +43,42 @@ def generate_response(
     the LLM natively produces output suited to Telegram (concise, plain text,
     emoji markers) or Teams (bullet points, bold headers, markdown tables).
     """
-    if not chunks or all(c["similarity"] < 0.3 for c in chunks):
+    no_kb_results = not chunks or all(c["similarity"] < 0.3 for c in chunks)
+
+    # When there are no KB results AND no prior conversation, return early.
+    # When there IS conversation history, still call the LLM so it can answer
+    # meta-questions like "what did I just ask?" from the injected history.
+    if no_kb_results and not conversation_history:
         answer = "I couldn't find relevant information in the knowledge base."
         return answer, [], _format_for_channel(answer, [], channel, fallback=True)
 
-    context = "\n---\n".join(c["chunk_text"] for c in chunks)
-    source_docs = list(dict.fromkeys(c["filename"] for c in chunks))
-
     client = OpenAI(api_key=settings.openai_api_key)
-
     format_hint = _CHANNEL_FORMAT_INSTRUCTIONS.get(channel, "")
 
-    system_prompt = (
-        "You are a helpful enterprise knowledge base assistant.\n"
-        "Answer questions using ONLY the provided context. Do not use any prior knowledge.\n"
-        "If the context does not contain the answer, say "
-        '"I couldn\'t find relevant information in the provided documents."\n'
-        "Keep answers concise (under 200 words). Be factual and professional."
-        f"{format_hint}"
-    )
-
-    user_message = f"""Question: {query}
+    if no_kb_results:
+        # Answer from conversation history only — no KB context available
+        system_prompt = (
+            "You are a helpful enterprise knowledge base assistant.\n"
+            "No relevant documents were found for this query.\n"
+            "You may answer based on the conversation history above if the question refers to it.\n"
+            "If the question requires knowledge base content that is not available, say so clearly.\n"
+            "Keep answers concise (under 200 words)."
+            f"{format_hint}"
+        )
+        user_message = f"Question: {query}"
+        source_docs = []
+    else:
+        context = "\n---\n".join(c["chunk_text"] for c in chunks)
+        source_docs = list(dict.fromkeys(c["filename"] for c in chunks))
+        system_prompt = (
+            "You are a helpful enterprise knowledge base assistant.\n"
+            "Answer questions using ONLY the provided context. Do not use any prior knowledge.\n"
+            "If the context does not contain the answer, say "
+            '"I couldn\'t find relevant information in the provided documents."\n'
+            "Keep answers concise (under 200 words). Be factual and professional."
+            f"{format_hint}"
+        )
+        user_message = f"""Question: {query}
 
 Context:
 {context}
@@ -83,7 +98,8 @@ Sources: {', '.join(source_docs)}"""
     )
 
     answer = response.choices[0].message.content.strip()
-    formatted = _format_for_channel(answer, source_docs, channel, fallback=False)
+    # history-only answers have no source docs but are not a hard fallback
+    formatted = _format_for_channel(answer, source_docs, channel, fallback=no_kb_results)
     return answer, source_docs, formatted
 
 
