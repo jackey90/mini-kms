@@ -12,8 +12,10 @@
 | Architecture | `architecture/` | ✅ Done | 100% |
 | Frontend | `frontend/` | ✅ Done | 100% |
 | Backend | `backend/` | ✅ Done | 100% |
-| QA | `qa/` | ⬜ Blocked | 0% |
-| Release | `release/` | ⬜ Blocked | 0% |
+| QA | `qa/` | ✅ Done | 100% |
+| Release | `release/` | ✅ Done | 99% |
+
+> ⚠️ Release 99%: one manual step remaining — set GitHub repository to **Public** on GitHub.com
 
 **Status Legend**: ⬜ Not started &nbsp;|&nbsp; 🟡 In progress &nbsp;|&nbsp; 🔴 Blocked &nbsp;|&nbsp; ✅ Done
 
@@ -29,7 +31,7 @@
 | Embedding | OpenAI — `text-embedding-3-small` |
 | Vector Store | FAISS (local) |
 | Relational DB | SQLite |
-| Document Parsing | LangChain (PDF + DOCX) |
+| Document Parsing | LangChain (PDF + DOCX) + pdfplumber (table extraction) |
 | Integrations | Telegram Bot + Microsoft Teams Bot |
 | Deployment | Docker Compose (local) |
 
@@ -44,12 +46,14 @@
 | 2026-02-21 | 2nd integration: Microsoft Teams | [2026-02-21](memory/2026-02-21.md) |
 | 2026-02-21 | Deployment: local Docker Compose | [2026-02-21](memory/2026-02-21.md) |
 | 2026-02-21 | LLM: OpenAI API (gpt-3.5-turbo) | [2026-02-21](memory/2026-02-21.md) |
+| 2026-02-23 | Sample data: 3 documents (HR PDF, Legal DOCX, Finance PDF) | [2026-02-23](memory/2026-02-23.md) |
+| 2026-02-23 | Go/No-Go: ✅ GO — all P0 requirements met | [2026-02-23](memory/2026-02-23.md) |
 
 ---
 
 ## Open Questions
 
-> None at this time. All initial decisions confirmed.
+> None. All decisions confirmed and all phases complete.
 
 ---
 
@@ -71,31 +75,56 @@
 - [x] non-functional-requirements.md: NFR-01~NFR-06 (performance/security/deployability)
 - [x] acceptance-criteria.md: 30 Given/When/Then criteria in English
 
-### Architecture `architecture/STATUS.md`
-- [x] Tech stack fully confirmed
-- [ ] HLD (system diagram, module boundaries)
-- [ ] LLD (package structure, interfaces)
-- [ ] API Contract
-- [ ] Data model / SQLite schema
-- [ ] Algorithm architecture (RAG pipeline)
-- [ ] UI wireframes
+### Architecture `architecture/STATUS.md` ✅
+- [x] Tech stack confirmed (Streamlit + FastAPI + FAISS + SQLite + OpenAI)
+- [x] HLD: system diagram, module boundaries, critical path
+- [x] LLD: package structure, interfaces, exception handling
+- [x] API Contract: all endpoints documented (documents / intents / query / analytics / integrations)
+- [x] Data model: SQLite schema with ERD
+- [x] Algorithm architecture: RAG pipeline, intent classification, vector retrieval
+- [x] UI wireframes: all 5 Streamlit pages
 
-### Frontend `frontend/STATUS.md`
-- [x] Framework confirmed: Streamlit (Python) — Option A recommended stack
-- [!] Blocked: waiting for API Contract
+### Frontend `frontend/STATUS.md` ✅
+- [x] Project scaffolding + requirements.txt
+- [x] Dashboard home (metrics cards + key stats)
+- [x] KB Management page (upload / list / delete / search / filter)
+- [x] Intent Configuration page (CRUD + query log)
+- [x] Frontend Integration page (status cards + config + test)
+- [x] Analytics page (charts + export CSV)
+- [x] Shared API client, session state, custom CSS
 
-### Backend `backend/STATUS.md`
-- [x] 2nd integration confirmed: Teams
-- [x] LLM confirmed: OpenAI API
-- [!] Blocked: waiting for LLD + API Contract
+### Backend `backend/STATUS.md` ✅
+- [x] FastAPI project setup + all dependencies pinned
+- [x] SQLite schema + SQLAlchemy ORM
+- [x] Document management: upload / parse PDF+DOCX / chunk / embed / FAISS index
+- [x] Intent space CRUD + default spaces (HR / Legal / Finance)
+- [x] Query orchestrator: intent classification + RAG retrieval + response generation
+- [x] Channel-aware formatting (Telegram vs Teams)
+- [x] Telegram Bot integration (polling)
+- [x] Microsoft Teams Bot integration (Bot Framework SDK)
+- [x] Analytics: query logging + history API + export
+- [x] Health check + observability middleware
 
-### QA `qa/STATUS.md`
-- [!] Blocked: waiting for frontend + backend completion
+### QA `qa/STATUS.md` ✅
+- [x] 22 functional test cases passed (document mgmt / intent spaces / orchestration / Admin UI / analytics)
+- [x] 2 frontend integration tests passed (Telegram + Teams)
+- [x] 3 non-functional tests passed (concurrency / security / zero-dependency startup)
+- [x] 3 SIT tests passed (full end-to-end chain)
+- [x] 5 UAT acceptance criteria met
+- [x] 2 known limitations accepted and documented in README
 
-### Release `release/STATUS.md`
-- [x] Deployment method confirmed: Docker Compose
-- [!] Blocked: waiting for QA sign-off
+### Release `release/STATUS.md` ✅ (99%)
+- [x] Version v1.0.0 confirmed
+- [x] All dependencies version-pinned
+- [x] `.env.example` complete
+- [x] `.gitignore` verified
+- [x] Sample data: 3 documents in `data/uploads/` (HR PDF + Legal DOCX + Finance PDF)
+- [x] `docker-compose.yml` single-command startup
+- [x] README: complete (setup / tech stack / integration guide / demo flow / known limitations)
+- [x] `AI-USAGE.md`: 3 scenarios documented
+- [x] Go/No-Go: ✅ GO
+- [ ] **Set GitHub repository to Public** ← _manual: github.com → Settings → Change visibility_
 
 ---
 
-*Last updated: 2026-02-21 — PRD phase complete*
+*Last updated: 2026-02-23 — All phases complete. Ready for delivery.*

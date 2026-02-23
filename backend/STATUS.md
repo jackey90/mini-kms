@@ -10,72 +10,72 @@
 
 ## 5.2.0 Project Initialization
 
-- [ ] Python project structure setup (FastAPI)
-- [ ] Dependency management (`requirements.txt` / `pyproject.toml`)
-- [ ] Environment variable configuration (`.env.example`)
-- [ ] SQLite database initialization script
+- [x] Python project structure setup (FastAPI)
+- [x] Dependency management (`requirements.txt` — all versions pinned)
+- [x] Environment variable configuration (`.env.example` complete)
+- [x] SQLite database initialization script
 
 ## 5.2.1 Database Layer
 
-- [ ] SQLite Schema implementation (documents, intent spaces, query logs, integration config tables)
-- [ ] ORM/query wrapper (SQLAlchemy or raw SQLite)
-- [ ] Database migration scripts
+- [x] SQLite Schema implementation (documents, intent spaces, query logs, integration config tables)
+- [x] ORM/query wrapper (SQLAlchemy)
+- [x] Database migration scripts
 
 ## 5.2.2 Document Management Module
 
-- [ ] File upload API (`POST /api/documents`)
-- [ ] PDF parsing (LangChain PDFLoader / pypdf)
-- [ ] DOCX parsing (LangChain Docx2txtLoader)
-- [ ] Text chunking strategy (RecursiveCharacterTextSplitter)
-- [ ] Vectorization (OpenAI `text-embedding-3-small`)
-- [ ] FAISS index construction & persistence
-- [ ] Document list API (`GET /api/documents`)
-- [ ] Document delete API (`DELETE /api/documents/{id}`)
-- [ ] Document re-parse API (`POST /api/documents/{id}/reparse`)
+- [x] File upload API (`POST /api/documents`)
+- [x] PDF parsing (LangChain PDFLoader + pdfplumber for table extraction)
+- [x] DOCX parsing (LangChain Docx2txtLoader)
+- [x] Text chunking strategy (RecursiveCharacterTextSplitter)
+- [x] Vectorization (OpenAI `text-embedding-3-small`)
+- [x] FAISS index construction & persistence
+- [x] Document list API (`GET /api/documents`)
+- [x] Document delete API (`DELETE /api/documents/{id}`)
+- [x] Document re-parse API (`POST /api/documents/{id}/reparse`)
 
 ## 5.2.3 Intent Space Management Module
 
-- [ ] Intent space CRUD API (`/api/intents`)
-- [ ] Default intent space initialization (HR / Legal / Finance)
-- [ ] Intent space ↔ document association logic
+- [x] Intent space CRUD API (`/api/intents`)
+- [x] Default intent space initialization (HR / Legal / Finance)
+- [x] Intent space ↔ document association logic
 
 ## 5.2.4 Query Orchestrator
 
-- [ ] Query entry API (`POST /api/query`)
-- [ ] Intent classification logic (LLM zero-shot, confidence ≥ 70%)
-- [ ] Fallback routing (General space)
-- [ ] RAG retrieval (FAISS vector search + context window assembly)
-- [ ] LLM response generation (concise answer with citations)
-- [ ] Response format adaptation (Telegram vs Teams format differences)
+- [x] Query entry API (`POST /api/query`)
+- [x] Intent classification logic (LLM zero-shot, confidence ≥ 70%)
+- [x] Fallback routing (General space)
+- [x] RAG retrieval (FAISS vector search + context window assembly)
+- [x] LLM response generation (concise answer with citations)
+- [x] Response format adaptation (Telegram vs Teams format differences)
 
 ## 5.2.5 Frontend Integration Module
 
-- [ ] Telegram Bot integration
-  - [ ] Webhook/Polling setup
-  - [ ] Message receive & reply
-  - [ ] Connection test API
-- [ ] Microsoft Teams Bot integration (Bot Framework SDK + Azure Bot registration)
-- [ ] Integration config management API (`/api/integrations`)
-- [ ] API Key secure storage (env vars / encrypted storage)
+- [x] Telegram Bot integration
+  - [x] Polling setup
+  - [x] Message receive & reply
+  - [x] Connection test API
+- [x] Microsoft Teams Bot integration (Bot Framework SDK)
+- [x] Integration config management API (`/api/integrations`)
+- [x] API Key secure storage (env vars, last-4-digits display only)
 
 ## 5.2.6 Analytics Module
 
-- [ ] Query log recording (auto-write on each query)
-- [ ] Query history API (`GET /api/analytics/queries`)
-- [ ] KB usage stats API (`GET /api/analytics/kb-usage`)
-- [ ] Data export API (`GET /api/analytics/export`)
+- [x] Query log recording (auto-write on each query)
+- [x] Query history API (`GET /api/analytics/queries`)
+- [x] KB usage stats API (`GET /api/analytics/kb-usage`)
+- [x] Data export API (`GET /api/analytics/export`)
 
 ## 5.2.7 Observability
 
-- [ ] Request logging middleware
-- [ ] Error logging (document parsing failures, LLM call failures)
-- [ ] Health check endpoint (`GET /api/health`)
+- [x] Request logging middleware
+- [x] Error logging (document parsing failures, LLM call failures)
+- [x] Health check endpoint (`GET /api/health`)
 
 ## 5.3 Testing
 
-- [ ] Unit tests (document parsing, intent classification logic)
-- [ ] API integration tests
-- [ ] Vector retrieval accuracy baseline validation
+- [x] Unit tests (document parsing, intent classification logic)
+- [x] API integration tests
+- [x] Vector retrieval accuracy baseline validation
 
 ---
 
@@ -92,3 +92,4 @@
 | Time | Completed | Memory Link |
 |------|-----------|-------------|
 | 2026-02-21 | Backend phase scaffolding | [memory/2026-02-21.md](../memory/2026-02-21.md) |
+| 2026-02-23 | All backend modules implemented and verified | [memory/2026-02-23.md](../memory/2026-02-23.md) |
