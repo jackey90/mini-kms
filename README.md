@@ -112,32 +112,35 @@ The system will parse, chunk, embed, and index the document automatically. Statu
 
 ### Step 6 — Send your first query
 
+**Easiest way — use the built-in Chat UI:**
+
+Navigate to **http://localhost:8501/Chat** in your browser.
+
+- Set your **User ID** in the sidebar (e.g. `demo`)
+- Click any sample question or type your own
+- Each answer shows the detected intent, confidence score, response time, and source documents
+
+Sample questions to try (matched to the uploaded documents):
+
+| Question | Expected Intent | Source Document |
+|----------|----------------|----------------|
+| What is the annual leave policy? | HR | `1_hr_employee_handbook.pdf` |
+| What personal data does the company collect? | Legal | `2_legal_data_privacy_policy.docx` |
+| What was the revenue growth in Q4 2025? | Finance | `3_finance_q4_2025_report.pdf` |
+
+**Or query via the REST API directly:**
+
 The `user_id` field scopes query history per user. Use any string identifier (e.g. email, username, or `"demo"`).
 
-**HR — annual leave policy (from `1_hr_employee_handbook.pdf`)**
 ```bash
 curl -X POST http://localhost:8000/api/query \
   -H "Content-Type: application/json" \
   -d '{"query": "What is the annual leave policy?", "channel": "api", "user_id": "demo"}'
 ```
 
-**Legal — data privacy rights (from `2_legal_data_privacy_policy.docx`)**
-```bash
-curl -X POST http://localhost:8000/api/query \
-  -H "Content-Type: application/json" \
-  -d '{"query": "What personal data does the company collect and how is it used?", "channel": "api", "user_id": "demo"}'
-```
-
-**Finance — Q4 2025 performance (from `3_finance_q4_2025_report.pdf`)**
-```bash
-curl -X POST http://localhost:8000/api/query \
-  -H "Content-Type: application/json" \
-  -d '{"query": "What was the revenue growth in Q4 2025?", "channel": "api", "user_id": "demo"}'
-```
-
 Each response includes `detected_intent`, `confidence`, `answer`, and `source_documents`.
 
-Or use the interactive API docs at **http://localhost:8000/docs**.
+Or browse all endpoints via the interactive API docs at **http://localhost:8000/docs**.
 
 ---
 
