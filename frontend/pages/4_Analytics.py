@@ -102,5 +102,26 @@ if items:
         for item in items
     ]
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+    st.divider()
+    st.subheader("Query Details")
+
+    for item in items:
+        label = f"🕐 {format_datetime(item['timestamp'])}  ·  {item['detected_intent']}  ·  {truncate(item['user_query'], 80)}"
+        with st.expander(label):
+            st.markdown("**User Query**")
+            st.write(item["user_query"])
+
+            st.markdown("**Agent Response**")
+            response = item.get("agent_response")
+            if response:
+                st.write(response)
+            else:
+                st.caption("No response recorded.")
+
+            col_a, col_b, col_c = st.columns(3)
+            col_a.caption(f"Channel: {item['channel']}")
+            col_b.caption(f"Confidence: {item['confidence_score']:.0%}")
+            col_c.caption(f"Sources: {', '.join(item['source_documents']) if item['source_documents'] else '—'}")
 else:
     st.info("No queries match the selected filters.")

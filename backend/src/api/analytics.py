@@ -16,6 +16,7 @@ class QueryLogResponse(BaseModel):
     id: int
     timestamp: datetime.datetime
     user_query: str
+    agent_response: str | None
     detected_intent: str
     confidence_score: float
     source_documents: list[str]
@@ -48,6 +49,7 @@ def query_history(
             id=log.id,
             timestamp=log.timestamp,
             user_query=log.user_query,
+            agent_response=log.agent_response,
             detected_intent=log.detected_intent,
             confidence_score=log.confidence_score,
             source_documents=json.loads(log.source_documents) if log.source_documents else [],
