@@ -26,10 +26,11 @@ except Exception as exc:
     st.error(f"Failed to load stats: {exc}")
     stats = {}
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 col1.metric("Total Documents", stats.get("total_documents", 0))
 col2.metric("Total Queries", stats.get("total_queries", 0))
-col3.metric("Intent Spaces Active", len(stats.get("intent_distribution", [])))
+col3.metric("Avg Latency", f"{stats.get('avg_latency_ms', 0)} ms")
+col4.metric("Intent Spaces Active", len(stats.get("intent_distribution", [])))
 
 st.divider()
 

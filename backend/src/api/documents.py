@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.db.models import Document, IntentSpace
-from src.services.document_service import validate_file, save_and_parse, delete_document
+from src.services.document_service import validate_file, save_and_parse, reparse_document, delete_document
 import datetime
 
 router = APIRouter(prefix="/documents", tags=["documents"])
@@ -82,6 +82,16 @@ def get_document(doc_id: int, db: Session = Depends(get_db)) -> DocumentResponse
     doc = db.query(Document).filter_by(id=doc_id).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
+    return _to_response(doc, db)
+
+
+@router.post("/{doc_id}/reparse")
+def reparse(doc_id: int, db: Session = Depends(get_db)) -> DocumentResponse:
+    try:
+        doc = reparse_document(doc_id, db)
+    except ValueError as exc:
+        code = 404 if "not found" in str(exc).lower() else 400
+        raise HTTPException(status_code=code, detail=str(exc))
     return _to_response(doc, db)
 
 

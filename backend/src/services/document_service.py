@@ -80,6 +80,46 @@ def save_and_parse(
     return doc
 
 
+def reparse_document(doc_id: int, db: Session) -> Document:
+    """Re-read an existing document from disk, re-parse, and re-index it."""
+    doc = db.query(Document).filter_by(id=doc_id).first()
+    if not doc:
+        raise ValueError(f"Document {doc_id} not found")
+    if not doc.file_path or not os.path.exists(doc.file_path):
+        raise ValueError("Original file not found on disk — please re-upload")
+
+    # Remove old vectors
+    vector_store.remove_document(doc.intent_space_id, doc.id)
+
+    doc.status = "processing"
+    db.commit()
+
+    try:
+        with open(doc.file_path, "rb") as f:
+            file_bytes = f.read()
+
+        chunks = parse_document(file_bytes, doc.filename)
+        embeddings = embed_texts(chunks)
+        vector_store.add_document_with_embeddings_stored(
+            intent_space_id=doc.intent_space_id,
+            chunks=chunks,
+            embeddings=embeddings,
+            document_id=doc.id,
+            filename=doc.filename,
+        )
+        doc.status = "processed"
+        doc.chunk_count = len(chunks)
+        doc.processed_at = datetime.datetime.utcnow()
+        doc.error_message = None
+    except Exception as exc:
+        doc.status = "error"
+        doc.error_message = str(exc)
+
+    db.commit()
+    db.refresh(doc)
+    return doc
+
+
 def delete_document(doc_id: int, db: Session) -> None:
     doc = db.query(Document).filter_by(id=doc_id).first()
     if not doc:

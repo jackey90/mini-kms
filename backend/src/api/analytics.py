@@ -1,11 +1,13 @@
 import json
 import datetime
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from src.db.database import get_db
-from src.services.analytics_service import get_query_logs, get_kb_stats, export_csv
+from src.services.analytics_service import (
+    get_query_logs, get_kb_stats, export_csv, reclassify_query,
+)
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])
 
@@ -61,6 +63,22 @@ def query_history(
 @router.get("/kb-usage")
 def kb_usage(db: Session = Depends(get_db)) -> dict:
     return get_kb_stats(db)
+
+
+class ReclassifyRequest(BaseModel):
+    correct_intent: str
+
+
+@router.put("/queries/{query_id}/reclassify")
+def reclassify(
+    query_id: int, body: ReclassifyRequest, db: Session = Depends(get_db)
+) -> dict:
+    try:
+        reclassify_query(query_id, body.correct_intent, db)
+    except ValueError as exc:
+        code = 404 if "not found" in str(exc).lower() else 400
+        raise HTTPException(status_code=code, detail=str(exc))
+    return {"message": f"Query {query_id} reclassified to '{body.correct_intent}'"}
 
 
 @router.get("/export")

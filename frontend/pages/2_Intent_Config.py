@@ -84,6 +84,7 @@ except Exception as exc:
     items = []
 
 if items:
+    intent_names = [s["name"] for s in intents] + ["general"]
     rows = [
         {
             "Time": format_datetime(item["timestamp"]),
@@ -96,5 +97,24 @@ if items:
         for item in items
     ]
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+    st.caption("Correct a misclassified query:")
+    with st.form("reclassify_form"):
+        rc_cols = st.columns([2, 2, 1])
+        query_options = {
+            f"#{item['id']}: {truncate(item['user_query'], 40)}": item["id"]
+            for item in items
+        }
+        selected_query = rc_cols[0].selectbox("Query", list(query_options.keys()))
+        correct_intent = rc_cols[1].selectbox("Correct Intent", intent_names)
+        submitted = rc_cols[2].form_submit_button("Reclassify")
+
+    if submitted and selected_query:
+        try:
+            api_client.reclassify_query(query_options[selected_query], correct_intent)
+            st.success("Intent corrected!")
+            st.rerun()
+        except Exception as exc:
+            st.error(f"Reclassification failed: {exc}")
 else:
     st.info("No queries yet.")

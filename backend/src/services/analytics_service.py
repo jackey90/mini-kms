@@ -5,6 +5,20 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from src.db.models import QueryLog, Document, IntentSpace
 
+def reclassify_query(query_id: int, correct_intent: str, db: Session) -> None:
+    """Admin overrides the detected intent for a query — used as a feedback signal."""
+    log = db.query(QueryLog).filter_by(id=query_id).first()
+    if not log:
+        raise ValueError(f"Query log {query_id} not found")
+
+    space = db.query(IntentSpace).filter_by(name=correct_intent).first()
+    if not space:
+        raise ValueError(f"Intent space '{correct_intent}' not found")
+
+    log.detected_intent = correct_intent
+    log.response_status = "reclassified"
+    db.commit()
+
 
 def get_query_logs(
     db: Session,
@@ -33,6 +47,9 @@ def get_kb_stats(db: Session) -> dict:
     total_docs = db.query(Document).filter(Document.status == "processed").count()
     total_queries = db.query(QueryLog).count()
 
+    avg_latency_row = db.query(func.avg(QueryLog.response_time_ms)).scalar()
+    avg_latency_ms = round(avg_latency_row) if avg_latency_row else 0
+
     intent_rows = (
         db.query(QueryLog.detected_intent, func.count(QueryLog.id).label("count"))
         .group_by(QueryLog.detected_intent)
@@ -51,6 +68,7 @@ def get_kb_stats(db: Session) -> dict:
     return {
         "total_documents": total_docs,
         "total_queries": total_queries,
+        "avg_latency_ms": avg_latency_ms,
         "intent_distribution": intent_distribution,
         "top_documents": [
             {"filename": d.filename, "access_count": d.access_count} for d in top_docs

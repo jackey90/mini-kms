@@ -71,13 +71,24 @@ else:
 
     for doc in docs:
         with st.container():
-            c1, c2, c3, c4, c5, c6 = st.columns([3, 2, 1, 1, 2, 1])
+            c1, c2, c3, c4, c5, c6, c7 = st.columns([3, 2, 1, 1, 2, 1, 1])
             c1.write(f"📄 {doc['filename']}")
             c2.write(format_datetime(doc["uploaded_at"]))
             c3.write(doc["format"].upper())
             c4.write(format_size(doc["size_bytes"]))
             c5.write(status_badge(doc["status"]))
-            if c6.button("🗑️", key=f"del_{doc['id']}", help="Delete document"):
+            if c6.button("🔄", key=f"reparse_{doc['id']}", help="Re-parse document"):
+                with st.spinner("Re-parsing..."):
+                    try:
+                        result = api_client.reparse_document(doc["id"])
+                        if result["status"] == "processed":
+                            st.success(f"Re-parsed '{doc['filename']}' ({result['chunk_count']} chunks)")
+                        else:
+                            st.error(f"Re-parse failed: {result.get('error_message', 'Unknown')}")
+                        st.rerun()
+                    except Exception as exc:
+                        st.error(f"Re-parse failed: {exc}")
+            if c7.button("🗑️", key=f"del_{doc['id']}", help="Delete document"):
                 if st.session_state.get(f"confirm_del_{doc['id']}"):
                     try:
                         api_client.delete_document(doc["id"])

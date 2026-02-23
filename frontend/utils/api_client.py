@@ -50,6 +50,10 @@ def upload_document(file_bytes: bytes, filename: str, intent_space_id: int) -> d
     return resp.json()
 
 
+def reparse_document(doc_id: int) -> dict:
+    return _post(f"/documents/{doc_id}/reparse")
+
+
 def delete_document(doc_id: int) -> dict:
     return _delete(f"/documents/{doc_id}")
 
@@ -114,6 +118,10 @@ def get_kb_stats() -> dict:
 
 def get_export_url() -> str:
     return f"{BASE_URL}/analytics/export"
+
+
+def reclassify_query(query_id: int, correct_intent: str) -> dict:
+    return _put(f"/analytics/queries/{query_id}/reclassify", {"correct_intent": correct_intent})
 
 
 def export_csv() -> bytes:
