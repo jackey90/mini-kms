@@ -47,6 +47,7 @@ class QueryLog(Base):
         DateTime, default=datetime.datetime.utcnow
     )
     user_query: Mapped[str] = mapped_column(String, nullable=False)
+    agent_response: Mapped[str | None] = mapped_column(String, nullable=True)
     detected_intent: Mapped[str] = mapped_column(String, nullable=False)
     confidence_score: Mapped[float] = mapped_column(Float, nullable=False)
     source_documents: Mapped[str] = mapped_column(String, default="[]")  # JSON array

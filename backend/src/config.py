@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     teams_app_id: str = ""
     teams_app_password: str = ""
     intent_confidence_threshold: float = 0.7
+    conversation_history_limit: int = 5  # number of recent Q&A pairs to include as context
     database_url: str = "sqlite:///./data/intelliknow.db"
     data_dir: str = "./data"
     max_file_size_bytes: int = 50 * 1024 * 1024

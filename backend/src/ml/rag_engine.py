@@ -31,8 +31,13 @@ def generate_response(
     query: str,
     chunks: list[dict],
     channel: str = "api",
+    conversation_history: list[dict] | None = None,
 ) -> tuple[str, list[str], str]:
     """Generate a RAG response from retrieved chunks.
+
+    conversation_history: list of {"role": "user"|"assistant", "content": str}
+    in chronological order. Injected between the system prompt and the current
+    user message so the LLM has context from prior turns.
 
     The system prompt includes channel-specific formatting instructions so
     the LLM natively produces output suited to Telegram (concise, plain text,
@@ -65,12 +70,14 @@ Context:
 
 Sources: {', '.join(source_docs)}"""
 
+    messages: list[dict] = [{"role": "system", "content": system_prompt}]
+    if conversation_history:
+        messages.extend(conversation_history)
+    messages.append({"role": "user", "content": user_message})
+
     response = client.chat.completions.create(
         model=settings.openai_chat_model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_message},
-        ],
+        messages=messages,
         max_tokens=400,
         temperature=0.1,
     )
