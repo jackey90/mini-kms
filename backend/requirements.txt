@@ -17,5 +17,6 @@ python-telegram-bot==21.9
 botbuilder-core==4.16.2
 botbuilder-integration-aiohttp==4.16.2
 httpx==0.28.1
+urllib3>=1.26.0,<3
 aiofiles==24.1.0
 pytest==8.3.4
