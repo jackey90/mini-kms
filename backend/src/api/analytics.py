@@ -22,6 +22,7 @@ class QueryLogResponse(BaseModel):
     source_documents: list[str]
     response_status: str
     channel: str
+    user_id: str | None
     response_time_ms: int | None
 
     model_config = {"from_attributes": True}
@@ -55,6 +56,7 @@ def query_history(
             source_documents=json.loads(log.source_documents) if log.source_documents else [],
             response_status=log.response_status,
             channel=log.channel,
+            user_id=log.user_id,
             response_time_ms=log.response_time_ms,
         )
         for log in logs

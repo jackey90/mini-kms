@@ -119,9 +119,10 @@ if items:
             else:
                 st.caption("No response recorded.")
 
-            col_a, col_b, col_c = st.columns(3)
-            col_a.caption(f"Channel: {item['channel']}")
-            col_b.caption(f"Confidence: {item['confidence_score']:.0%}")
-            col_c.caption(f"Sources: {', '.join(item['source_documents']) if item['source_documents'] else '—'}")
+            col_a, col_b, col_c, col_d = st.columns(4)
+            col_a.caption(f"User ID: {item.get('user_id') or '—'}")
+            col_b.caption(f"Channel: {item['channel']}")
+            col_c.caption(f"Confidence: {item['confidence_score']:.0%}")
+            col_d.caption(f"Sources: {', '.join(item['source_documents']) if item['source_documents'] else '—'}")
 else:
     st.info("No queries match the selected filters.")
